@@ -205,25 +205,19 @@
     </section>
 
     <!-- ============================================ -->
-    <!-- GALLERY SECTION -->
+    <!-- GALLERY SECTION  -->
     <!-- ============================================ -->
+
     <section class="gallery-section" id="galerie">
         <div class="section-header">
             <h2 class="gallery-title">GALERIE</h2>
-
-            <!-- Gallery Filters -->
-            <div class="gallery-filters">
-                <button class="filter-btn active" data-filter="toate">TOATE</button>
-                <button class="filter-btn" data-filter="caricaturi">CARICATURI</button>
-                <button class="filter-btn" data-filter="portrete">PORTRETE</button>
-                <button class="filter-btn" data-filter="murale">MURALE</button>
-                <button class="filter-btn" data-filter="collectibles">COLLECTIBLES</button>
-            </div>
+            <p class="gallery-subtitle">Exploreaza lucrarile mele — de la caricaturi la murale</p>
         </div>
 
-        <!-- Masonry Gallery Grid -->
-        <div class="gallery-grid">
-            <!-- Polaroid 1 -->
+        <!-- Simple Grid - 6 Photos -->
+        <div class="gallery-grid-simple">
+
+            <!-- Photo 1 -->
             <div class="polaroid" data-category="caricaturi">
                 <div class="polaroid-image">
                     <img src="https://picsum.photos/seed/art1/600/600" alt="Caricatura">
@@ -234,14 +228,13 @@
                 </div>
                 <div class="polaroid-overlay">
                     <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
                 </div>
             </div>
 
-            <!-- Polaroid 2 -->
+            <!-- Photo 2 -->
             <div class="polaroid" data-category="portrete">
                 <div class="polaroid-image">
-                    <img src="https://picsum.photos/seed/art2/600/800" alt="Portret">
+                    <img src="https://picsum.photos/seed/art2/600/600" alt="Portret">
                 </div>
                 <div class="polaroid-caption">
                     <p>Portrete</p>
@@ -249,11 +242,10 @@
                 </div>
                 <div class="polaroid-overlay">
                     <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
                 </div>
             </div>
 
-            <!-- Polaroid 3 -->
+            <!-- Photo 3 -->
             <div class="polaroid" data-category="murale">
                 <div class="polaroid-image">
                     <img src="https://picsum.photos/seed/art3/600/600" alt="Mural">
@@ -264,14 +256,13 @@
                 </div>
                 <div class="polaroid-overlay">
                     <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
                 </div>
             </div>
 
-            <!-- Polaroid 4 -->
+            <!-- Photo 4 -->
             <div class="polaroid" data-category="collectibles">
                 <div class="polaroid-image">
-                    <img src="https://picsum.photos/seed/art4/800/600" alt="Collectible">
+                    <img src="https://picsum.photos/seed/art4/600/600" alt="Collectible">
                 </div>
                 <div class="polaroid-caption">
                     <p>Collectibles</p>
@@ -279,11 +270,10 @@
                 </div>
                 <div class="polaroid-overlay">
                     <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
                 </div>
             </div>
 
-            <!-- Polaroid 5 -->
+            <!-- Photo 5 -->
             <div class="polaroid" data-category="caricaturi">
                 <div class="polaroid-image">
                     <img src="https://picsum.photos/seed/art5/600/600" alt="Caricatura">
@@ -294,11 +284,10 @@
                 </div>
                 <div class="polaroid-overlay">
                     <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
                 </div>
             </div>
 
-            <!-- Polaroid 6 -->
+            <!-- Photo 6 -->
             <div class="polaroid" data-category="portrete">
                 <div class="polaroid-image">
                     <img src="https://picsum.photos/seed/art6/600/600" alt="Portret">
@@ -309,39 +298,16 @@
                 </div>
                 <div class="polaroid-overlay">
                     <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
                 </div>
             </div>
 
-            <!-- Polaroid 7 -->
-            <div class="polaroid" data-category="murale">
-                <div class="polaroid-image">
-                    <img src="https://picsum.photos/seed/art7/600/600" alt="Mural">
-                </div>
-                <div class="polaroid-caption">
-                    <p>Murale</p>
-                    <span>#7</span>
-                </div>
-                <div class="polaroid-overlay">
-                    <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
-                </div>
-            </div>
+        </div>
 
-            <!-- Polaroid 8 -->
-            <div class="polaroid" data-category="collectibles">
-                <div class="polaroid-image">
-                    <img src="https://picsum.photos/seed/art8/600/600" alt="Collectible">
-                </div>
-                <div class="polaroid-caption">
-                    <p>Collectibles</p>
-                    <span>#8</span>
-                </div>
-                <div class="polaroid-overlay">
-                    <h4>WOW!</h4>
-                    <button class="comic-border">DETALII</button>
-                </div>
-            </div>
+        <!-- CTA Button -->
+        <div class="gallery-cta">
+            <a href="#galerie-completa" class="btn-view-gallery comic-border">
+                VEZI GALERIA COMPLETĂ
+            </a>
         </div>
     </section>
 
@@ -535,7 +501,9 @@
             <!-- Left Side - Brand -->
             <div class="footer-brand">
                 <div class="footer-logo-wrapper">
-                    <div class="logo-mark">ML</div>
+                    <div class="logo-mark">
+                        <img src="img/msStar.svg" alt="ML">
+                    </div>
                     <div class="footer-text">
                         <h4>MATTEO LUNGU</h4>
                         <p>ART WITH ATTITUDE</p>
@@ -701,9 +669,122 @@
 
     </div>
 
+    <!-- ============================================ -->
+    <!-- GALLERY OVERLAY SYSTEM  -->
+    <!-- ============================================ -->
+
+    <!-- Gallery Overlay (Similar to Shop Page) -->
+    <div class="gallery-page" id="galleryPage">
+
+        <!-- Gallery Header -->
+        <div class="gallery-page-header">
+            <button class="btn-back-gallery" id="btnBackFromGallery">✕ ÎNCHIDE</button>
+
+            <div class="gallery-header-content">
+                <div class="gallery-title-section">
+                    <h1 class="gallery-page-title">GALERIE</h1>
+                    <p class="gallery-page-subtitle">Exploreaza toate lucrarile mele</p>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="gallery-tabs">
+                    <button class="gallery-tab active" data-category="toate">TOATE</button>
+                    <button class="gallery-tab" data-category="caricaturi">CARICATURI</button>
+                    <button class="gallery-tab" data-category="portrete">PORTRETE</button>
+                    <button class="gallery-tab" data-category="murale">MURALE</button>
+                    <button class="gallery-tab" data-category="collectibles">COLLECTIBLES</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-page-grid" id="galleryPageGrid">
+            <!-- Photos will be rendered here by JS -->
+        </div>
+
+    </div>
+
+    <!-- Lightbox for Fullscreen View -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-overlay" id="lightboxOverlay"></div>
+
+        <div class="lightbox-content">
+            <!-- Close Button -->
+            <button class="lightbox-close" id="lightboxClose">✕</button>
+
+            <!-- Navigation Arrows -->
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+
+            <!-- Image Container -->
+            <div class="lightbox-image-wrapper">
+                <img src="" alt="" id="lightboxImage">
+
+                <!-- Category Tag -->
+                <div class="lightbox-category-tag" id="lightboxCategory">CARICATURI</div>
+
+                <!-- Image Counter -->
+                <div class="lightbox-counter" id="lightboxCounter">1 / 12</div>
+            </div>
+
+            <!-- Image Info -->
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle">Titlu Lucrare</h3>
+                <p id="lightboxDescription">Descriere lucrare aici</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Data (Easy to Edit) -->
+    <div id="galleryData" style="display: none;">
+        <!-- Photo 1 -->
+        <div class="photo-data" data-id="1" data-category="caricaturi" data-title="Caricatura Personaj #1"
+            data-description="Caricatura digitala realizata pentru client"
+            data-image="https://picsum.photos/seed/art1/1200/800">
+        </div>
+
+        <!-- Photo 2 -->
+        <div class="photo-data" data-id="2" data-category="portrete" data-title="Portret Artistic #1"
+            data-description="Portret in stil modernist" data-image="https://picsum.photos/seed/art2/1200/800">
+        </div>
+
+        <!-- Photo 3 -->
+        <div class="photo-data" data-id="3" data-category="murale" data-title="Mural Stradal"
+            data-description="Pictura murala in Sanpetru, Brasov" data-image="https://picsum.photos/seed/art3/1200/800">
+        </div>
+
+        <!-- Photo 4 -->
+        <div class="photo-data" data-id="4" data-category="collectibles" data-title="Multistarz Collectibles Micutzu"
+            data-description="Caricatura edtie limitata" data-image="https://picsum.photos/seed/art4/1200/800">
+        </div>
+
+        <!-- Photo 5 -->
+        <div class="photo-data" data-id="5" data-category="caricaturi" data-title="Caricatura Client "
+            data-description="Caricatura clasica pe hartie" data-image="https://picsum.photos/seed/art5/1200/800">
+        </div>
+
+        <!-- Photo 6 -->
+        <div class="photo-data" data-id="6" data-category="portrete" data-title="Portret Artistic #2"
+            data-description="Portret digital HQ" data-image="https://picsum.photos/seed/art6/1200/800">
+        </div>
+
+        <!-- Photo 7 -->
+        <div class="photo-data" data-id="7" data-category="murale" data-title="Street Art Urban"
+            data-description="Graffiti pe perete" data-image="https://picsum.photos/seed/art7/1200/800">
+        </div>
+
+        <!-- Photo 8 -->
+        <div class="photo-data" data-id="8" data-category="collectibles" data-title="Multistarz Collectibles Spiderman"
+            data-description="Card collectibles edtie speciala" data-image="https://picsum.photos/seed/art8/1200/800">
+        </div>
+
+        <!-- ADD MORE PHOTOS HERE -->
+    </div>
+
     <!-- JavaScript -->
     <script src="js/script.js"></script>
     <script src="js/shop.js"></script>
+    <script src="js/gallery.js"></script>
 </body>
 
 </html>
