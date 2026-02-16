@@ -222,39 +222,50 @@ h3 {
     gap: 16px;
 }
 
+/* ============================================
+   HEADER LOGO - MULTISTARZ SPINNING
+============================================ */
+
 .logo-mark {
-    width: 56px;
-    /* w-14 */
-    height: 56px;
-    /* h-14 */
-    background: #859F3D;
-    border: 4px solid var(--black);
+    width: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Bangers', cursive;
-    /* font-display */
-    color: var(--black);
-    font-size: 1.875rem;
-    /* text-3xl */
-    transform: rotate(-8deg);
-    /* rotate-[-8deg] */
-    transition: all 0.3s ease;
-    box-shadow: 4px 4px 0px #fff;
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
+/* Logo image */
+.logo-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.6s ease;
+
+}
+
+/* Fast spin on hover */
+.logo:hover .logo-mark img {
+    animation: fastSpin 0.5s ease-in-out;
+}
+
+@keyframes fastSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(720deg); }  /* 2 rotații complete */
+}
+
+/* Optional: logo box tilt */
 .logo:hover .logo-mark {
-    transform: rotate(0deg) scale(1.1);
-    /* group-hover */
+    transform: rotate(-5deg) scale(1.05);
 }
 
+/* Text "MATTEO LUNGU" rămâne la fel */
 .logo-text {
     font-family: 'Bangers', cursive;
     font-size: 1.5rem;
-    /* text-2xl */
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    /* tracking-wider */
     color: var(--white);
     filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 1));
     transition: color 0.3s ease;
@@ -457,353 +468,522 @@ h3 {
 }
 
 /* ============================================
-   HERO SECTION
+   COMPACT HERO - FLOATING STICKER VERSION
+   Replace your hero CSS with this
 ============================================ */
 
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 65vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 120px;
-    padding-bottom: 40px;
-    overflow: visible;
+    padding: 140px 60px 60px;
+    overflow: visible;  /* CRITIC! */
     background: var(--black);
 }
 
-/* Large Mesh Grid - TOP LEFT (Fixed on entire page) */
-.hero::before {
-    content: '';
-    position: fixed; /* CHANGED from absolute */
-    top: 0;
-    left: 0;
-    width: 100%; /* CHANGED - full width */
-    height: 100%; /* CHANGED - full height */
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.2; /* More visible */
-    
-    /* Larger mesh dots */
-    background-image: radial-gradient(#859F3D 1.5px, transparent 1.5px);
-    background-size: 25px 25px; /* BIGGER mesh */
-    
-    /* Gradient mask from top-left */
-    mask-image: radial-gradient(
-        ellipse 1200px 1000px at top left, 
-        black 20%, 
-        transparent 60%
-    );
-    -webkit-mask-image: radial-gradient(
-        ellipse 1200px 1000px at top left, 
-        black 20%, 
-        transparent 60%
-    );
-}
-
-/* Large Mesh Grid - BOTTOM RIGHT (Fixed on entire page) */
-.hero::after {
-    content: '';
-    position: fixed; /* CHANGED from absolute */
-    top: 0;
-    left: 0;
-    width: 100%; /* CHANGED - full width */
-    height: 100%; /* CHANGED - full height */
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.2; /* More visible */
-    
-    /* Larger mesh dots */
-    background-image: radial-gradient(#859F3D 1.5px, transparent 1.5px);
-    background-size: 25px 25px; /* BIGGER mesh */
-    
-    /* Gradient mask from bottom-right */
-    mask-image: radial-gradient(
-        ellipse 1000px 900px at bottom right, 
-        black 20%, 
-        transparent 60%
-    );
-    -webkit-mask-image: radial-gradient(
-        ellipse 1000px 900px at bottom right, 
-        black 20%, 
-        transparent 60%
-    );
-}
-
-.hero-ellipse {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: #111a0d;
-    border-radius: 0; /* Perfect square */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* No rotation */
-    z-index: 0;
-    opacity: 0.6;
-}
-
-.hero-content {
+/* Main Container - Horizontal Layout */
+.hero-split-container {
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 80px;
     position: relative;
     z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    margin: 0 auto;
+    overflow: visible;
 }
 
 /* ============================================
-   HERO LOGO CIRCLE
+   LEFT: BIG PHOTO
 ============================================ */
 
-.hero-logo {
+.hero-left {
+    flex-shrink: 0;
+}
+
+.hero-photo-wrapper {
     position: relative;
-    margin-bottom: 32px;
-    /* mb-8 */
-    width: fit-content;
 }
 
-/* Rotating dashed circle */
-.hero-logo::before {
-    content: '';
-    position: absolute;
-    inset: -15px;
-    border: 3px dashed rgba(133, 159, 61, 0.4);
-    border-radius: 50%;
-    animation: spin 20s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.hero-logo-circle {
-    position: relative;
-    width: 256px;
-    /* w-64 */
-    height: 256px;
-    /* h-64 */
+.hero-photo-circle {
+    width: 450px;
+    height: 450px;
     border-radius: 50%;
     overflow: hidden;
-    border: 6px solid var(--white);
-    box-shadow: 8px 8px 0px rgba(133, 159, 61, 1);
-    /* 3D shadow effect */
+    border: 10px solid #859F3D;
+    background: var(--white);
+    box-shadow: 15px 15px 0px rgba(133, 159, 61, 0.8);
+    position: relative;
     transition: transform 0.5s ease;
 }
 
-.hero-logo:hover .hero-logo-circle {
-    transform: scale(1.02);
-}
+.hero-photo-circle:hover {
+    transform: scale(1.05) rotate(-2deg);
+} 
 
-.hero-logo-circle img {
+.hero-photo-circle img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(1) brightness(1.1);
+    filter: brightness(1.1);
     transition: filter 0.7s ease;
 }
 
-.hero-logo:hover .hero-logo-circle img {
+.hero-photo-circle:hover img {
     filter: grayscale(0) brightness(1);
 }
 
 /* ============================================
-   STICKERS
+   CENTER: TITLE + BUTTONS - FIXED VERSION
 ============================================ */
 
-.sticker {
-    position: absolute;
-    padding: 8px 16px;
-    font-family: 'Bangers', cursive;
-    border: 3px solid var(--black);
-    box-shadow: 3px 3px 0px var(--black);
-    z-index: 10;
-    animation: float 3s ease-in-out infinite;
-}
-
-.sticker-est {
-    bottom: -24px;
-    left: -32px;
-    background: var(--white);
-    color: var(--black);
-    font-family: 'Permanent Marker', cursive;
-    /* font-marker */
-    font-size: 0.875rem;
-    /* text-sm */
-    padding: 8px 20px;
-    transform: rotate(6deg);
-    animation-delay: 1.5s;
-}
-
-.sticker-est:hover {
-    transform: rotate(0deg) translate(-3px, -3px);
-
-    box-shadow:
-        10px 10px 0px 0px var(--green),
-        2px 2px 0px 1px var(--black);
-}
-
-/* Comic border class used in TSX */
-.comic-border {
-    border: 3px solid var(--black);
-    box-shadow: 3px 3px 0px var(--black);
-}
-
-/* ============================================
-   HERO TEXT
-============================================ */
-
-.hero-title {
+.hero-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
     position: relative;
-    text-align: center;
-    padding: 0 16px;
-    margin-bottom: 40px;
+    overflow: visible;
 }
 
-/* Decorative scribble */
-.hero-title::before {
-    content: '';
-    position: absolute;
-    top: -40px;
-    left: -40px;
-    width: 80px;
-    height: 80px;
-    opacity: 0.2;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' fill='none' stroke='%23859F3D' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,50 Q25,10 40,50 T70,50 T90,50'/%3E%3C/svg%3E");
+.hero-title-new {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
 }
 
-.hero-title h1 {
-    font-size: clamp(4rem, 13vw, 14rem);
+/* Scoate scribble-ul */
+.hero-title-new::before {
+    display: none;
+}
+
+.hero-title-new h1 {
+    font-size: clamp(6rem, 13vw, 14rem);
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -0.025em;
-    line-height: 0.85;
-    margin-bottom: 16px;
-    filter: drop-shadow(4px 4px 0px rgba(133, 159, 61, 0.5));
-    padding: 0 20px; /* Add padding so it doesn't overflow */
+    letter-spacing: -0.03em;
+    line-height: 0.9;  /* Strâns - mai puțin spațiu între rânduri */
+    font-style: italic;
+    margin: 0;
+    padding: 0;
 }
 
+/* Shadow diferit pentru alb */
 .title-white {
     color: var(--white);
-    display: inline;
+    text-shadow: 
+        6px 6px 0px rgba(133, 159, 61, 0.9),
+        3px 3px 0px rgba(133, 159, 61, 0.6);
 }
 
+/* Shadow mai subtil pentru verde */
 .title-green {
     color: #859F3D;
-    display: inline;
+    text-shadow: 
+        4px 4px 0px rgba(0, 0, 0, 0.3),
+        2px 2px 0px rgba(0, 0, 0, 0.15);
 }
 
-/* ============================================
-   SUBTITLE WITH UNDERLINE
-============================================ */
-
-.hero-subtitle {
+/* Subtitle */
+.hero-subtitle-new {
     position: relative;
     display: inline-block;
-    margin-bottom: 40px;
 }
 
-.hero-subtitle p {
+.hero-subtitle-new p {
     color: var(--white);
     font-family: 'Permanent Marker', cursive;
-    font-size: 1.25rem;
-    /* text-xl */
-    letter-spacing: 0.025em;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    margin: 0;
 }
 
-.hero-subtitle::after {
+.hero-subtitle-new::after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: -10px;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 5px;
     background: #859F3D;
     border-radius: 999px;
 }
 
-/* ============================================
-   HERO BUTTONS
-============================================ */
-
-.hero-buttons {
+/* Buttons */
+.hero-buttons-new {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
+    gap: 20px;
+    margin-top: 8px;
 }
 
-.hero-buttons .btn-primary {
-    padding: 22px 48px;
-    background: var(--green);
+.hero-buttons-new .btn-primary {
+    padding: 24px 60px;
+    background: #859F3D;
     color: var(--black);
     font-family: 'Bangers', cursive;
-    font-size: 1.6rem;
+    font-size: 1.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-
-    position: relative;
-    border: 3px solid var(--black);
+    border: 4px solid var(--black);
     border-radius: 2px;
-
     box-shadow:
-        8px 8px 0px 0px var(--green),
-        4px 4px 0px 4px var(--black);
-
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+        12px 12px 0px 0px #859F3D,
+        6px 6px 0px 6px var(--black);
+    transition: all 0.15s ease;
+    cursor: pointer;
 }
 
-.hero-buttons .btn-primary:hover {
+.hero-buttons-new .btn-primary:hover {
     background: var(--white);
-    color: var(--black);
-
     transform: translate(-3px, -3px);
-
     box-shadow:
-        14px 14px 0px 0px var(--green),
-        8px 8px 0px 4px var(--black);
+        18px 18px 0px 0px #859F3D,
+        12px 12px 0px 6px var(--black);
 }
 
-
-.hero-buttons .btn-secondary {
-    padding: 22px 48px;
+.hero-buttons-new .btn-secondary {
+    padding: 24px 60px;
     background: transparent;
     color: var(--white);
     font-family: 'Bangers', cursive;
-    font-size: 1.6rem;
+    font-size: 1.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-
-    position: relative;
-    border: 3px solid var(--white);
+    border: 4px solid var(--white);
     border-radius: 2px;
-
     box-shadow:
-        8px 8px 0px 0px var(--green),
-        4px 4px 0px 4px var(--black);
-
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+        12px 12px 0px 0px #859F3D,
+        6px 6px 0px 6px var(--black);
+    transition: all 0.15s ease;
+    cursor: pointer;
 }
 
-.hero-buttons .btn-secondary:hover {
-    background: var(--green);
+.hero-buttons-new .btn-secondary:hover {
+    background: #859F3D;
     color: var(--black);
     border-color: var(--black);
-
     transform: translate(-3px, -3px);
-
     box-shadow:
-        14px 14px 0px 0px var(--green),
-        8px 8px 0px 4px var(--black);
+        18px 18px 0px 0px #859F3D,
+        12px 12px 0px 6px var(--black);
+}
+
+/* ============================================
+   RIGHT: FLOATING SVG - NO BORDER, NO LABEL
+============================================ */
+
+.hero-right {
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-50%) rotate(12deg);
+    z-index: 20;
+}
+
+.hero-right {
+    display: none;  /* Ascuns! */
+}
+
+.multistarz-sticker-wrapper {
+    position: relative;
+    animation: floatSticker 6s ease-in-out infinite;
+}
+
+@keyframes floatSticker {
+    0%, 100% { 
+        transform: translateY(0) rotate(12deg); 
+    }
+    50% { 
+        transform: translateY(-15px) rotate(8deg); 
+    }
+}
+
+/* Just the SVG - NO background, NO border */
+.multistarz-circle {
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* NO background, NO border, NO padding */
+}
+
+/* SVG Image */
+/* ============================================
+   MODIFICĂ DOAR ASTA ÎN CSS
+============================================ */
+
+.multistarz-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 10;
+    
+    /* Outline alb în jurul SVG-ului */
+    filter: 
+        drop-shadow(0 0 0 4px white)           /* Outline alb 4px */
+        drop-shadow(0 0 0 6px var(--black))    /* Border negru peste */
+        drop-shadow(5px 5px 8px rgba(0, 0, 0, 0.3));  /* Shadow pentru depth */
+    
+    /* Background alb în spatele SVG-ului */
+    background: white;
+    padding: 15px;  /* Spațiu alb în jurul SVG-ului */
+}
+
+/* Scotch tape on top - OPTIONAL */
+.multistarz-circle::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(3deg);
+    width: 50%;
+    height: 18px;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.3)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 2px 3px rgba(0, 0, 0, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* HIDE the yellow label */
+.multistarz-label {
+    display: none;  /* Gone! */
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+
+@media (max-width: 1400px) {
+    .hero-right {
+        right: -40px;
+    }
+
+    .multistarz-circle {
+        width: 240px;
+        height: 240px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .hero-right {
+        right: -20px;
+    }
+
+    .multistarz-circle {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 1024px) {
+    /* Sticker goes below on mobile */
+    .hero-right {
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: rotate(8deg);
+        margin-top: 40px;
+    }
+
+    .multistarz-circle {
+        width: 260px;
+        height: 260px;
+    }
+}
+
+@media (max-width: 640px) {
+    .multistarz-circle {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+
+@media (max-width: 1400px) {
+    .hero-right {
+        right: -40px;
+    }
+
+    .multistarz-circle {
+        width: 240px;
+        height: 240px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .hero-split-container {
+        gap: 60px;
+    }
+
+    .hero-photo-circle {
+        width: 380px;
+        height: 380px;
+    }
+
+    .hero-title-new h1 {
+        font-size: clamp(5rem, 11vw, 11rem);
+    }
+
+    .hero-right {
+        right: -20px;
+        transform: translateY(-50%) rotate(10deg);
+    }
+
+    .multistarz-circle {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero {
+        min-height: auto;
+        padding: 120px 40px 80px;
+    }
+
+    .hero-split-container {
+        flex-direction: column;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .hero-center {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-photo-circle {
+        width: 340px;
+        height: 340px;
+    }
+
+    .hero-title-new h1 {
+        font-size: clamp(4rem, 12vw, 8rem);
+    }
+
+    .hero-subtitle-new p {
+        font-size: 1.5rem;
+    }
+
+    /* Sticker goes below on mobile */
+    .hero-right {
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: rotate(8deg);
+        margin-top: 40px;
+    }
+
+    .multistarz-circle {
+        width: 260px;
+        height: 260px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 100px 24px 60px;
+    }
+
+    .hero-photo-circle {
+        width: 280px;
+        height: 280px;
+        border: 6px solid #859F3D;
+    }
+
+    .hero-title-new h1 {
+        font-size: clamp(3rem, 12vw, 6rem);
+    }
+
+    .hero-subtitle-new p {
+        font-size: 1.25rem;
+    }
+
+    .hero-buttons-new {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-buttons-new .btn-primary,
+    .hero-buttons-new .btn-secondary {
+        width: 100%;
+        padding: 20px 40px;
+        font-size: 1.5rem;
+    }
+
+    .multistarz-circle {
+        width: 220px;
+        height: 220px;
+        padding: 25px;
+    }
+
+    .multistarz-label {
+        font-size: 0.875rem;
+        padding: 8px 20px;
+    }
+}
+
+/* ============================================
+   BACKGROUND MESH
+============================================ */
+
+.hero::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.2;
+    background-image: radial-gradient(#859F3D 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
+    mask-image: radial-gradient(
+        ellipse 1200px 1000px at top left, 
+        black 20%, 
+        transparent 60%
+    );
+}
+
+.hero::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.2;
+    background-image: radial-gradient(#859F3D 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
+    mask-image: radial-gradient(
+        ellipse 1000px 900px at bottom right, 
+        black 20%, 
+        transparent 60%
+    );
 }
 
 /* ============================================
@@ -855,6 +1035,7 @@ h3 {
 
 .shop-title {
     text-shadow: 4px 4px 0px rgba(133, 159, 61, 0.5);
+    letter-spacing: 0.02em;
 }
 
 .section-subtitle {
