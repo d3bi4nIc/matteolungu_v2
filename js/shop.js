@@ -143,6 +143,66 @@ if (btnEmail) {
 }
 
 /* ============================================
+   MOBILE CART SYNC - Add to shop.js
+============================================ */
+
+// Sync mobile cart button with desktop
+function updateCart() {
+    if (cartCountElement) {
+        if (cartCount > 0) {
+            cartCountElement.textContent = cartCount;
+            cartCountElement.style.display = 'flex';
+        } else {
+            cartCountElement.style.display = 'none';
+        }
+    }
+
+    // SYNC MOBILE CART COUNT
+    const cartCountMobile = document.getElementById('cartCountMobile');
+    if (cartCountMobile) {
+        if (cartCount > 0) {
+            cartCountMobile.textContent = cartCount;
+            cartCountMobile.style.display = 'flex';
+        } else {
+            cartCountMobile.style.display = 'none';
+        }
+    }
+
+    if (cart.length === 0) {
+        cartEmpty.style.display = 'flex';
+        cartItemsList.innerHTML = '';
+        cartTotalAmount.textContent = '0 LEI';
+        btnWhatsApp.disabled = true;
+        btnEmail.disabled = true;
+    } else {
+        cartEmpty.style.display = 'none';
+        renderCartItems();
+        updateTotal();
+        btnWhatsApp.disabled = false;
+        btnEmail.disabled = false;
+    }
+}
+
+// Mobile cart button event listener
+document.addEventListener('DOMContentLoaded', () => {
+    const cartButtonMobile = document.getElementById('cartButtonMobile');
+
+    if (cartButtonMobile) {
+        cartButtonMobile.addEventListener('click', () => {
+            openCart();
+            // Close mobile menu when cart opens
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileToggle = document.getElementById('mobileToggle');
+            if (mobileMenu && mobileToggle) {
+                mobileToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        });
+    }
+});
+
+/* ============================================
    LOAD PRODUCTS FROM HTML - Easy to Edit!
 ============================================ */
 
@@ -410,7 +470,7 @@ function renderReadyProducts() {
         shopProductsGrid.innerHTML = '<p style="color: white; text-align: center; padding: 40px;">No products available.</p>';
         return;
     }
-    
+
     shopProductsGrid.innerHTML = `
         <div class="ready-products-grid">
             ${readyProducts.map(product => `
@@ -430,7 +490,7 @@ function renderReadyProducts() {
             `).join('')}
         </div>
     `;
-    
+
     attachReadyProductListeners();
     attachHoloEffect(); // CRITICAL - Must be here!
 }
@@ -439,27 +499,27 @@ function renderReadyProducts() {
 // Add this AFTER renderReadyProducts() function
 function attachHoloEffect() {
     console.log('🌟 Attaching holo effect...');
-    
+
     const holoCards = document.querySelectorAll('.ready-product-card.holo-card');
     console.log('Found', holoCards.length, 'holo cards');
-    
+
     holoCards.forEach((card, index) => {
         console.log('✅ Attached holo to card', index);
-        
+
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            
+
             const rotateX = (y - centerY) / 10;
             const rotateY = (centerX - x) / 10;
-            
+
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         });
-        
+
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
         });
@@ -512,7 +572,7 @@ function attachReadyProductListeners() {
 }
 
 /* ============================================
-   SCROLLING REVIEWS - Animated Testimonials
+   SCROLLING REVIEWS - SECTION-BASED POSITIONING
 ============================================ */
 
 const REVIEW_DATA = [
@@ -524,35 +584,137 @@ const REVIEW_DATA = [
     { text: "Am comandat un Multistarz rare card si arata fenomenal!", author: "IONUȚ R." }
 ];
 
+// ZONE LEGATE DE SECȚIUNI - apar lângă elemente specifice!
+const SECTION_REVIEW_ZONES = [
+    {
+        selector: '.gallery-section',  // Secțiunea gallery
+        position: 'top-left',          // Unde în secțiune
+        offsetX: 40,                   // Offset de la margine
+        offsetY: 100,                  // Offset de sus
+        rotation: -5,
+        section: 'gallery'
+    },
+    {
+        selector: '.gallery-section',
+        position: 'top-right',
+        offsetX: -320,                 // Negativ = de la dreapta
+        offsetY: 100,
+        rotation: 5,
+        section: 'gallery'
+    },
+    {
+        selector: '.shop-section',
+        position: 'top-left',
+        offsetX: 40,
+        offsetY: 150,
+        rotation: -4,
+        section: 'shop'
+    },
+    {
+        selector: '.contact-section',
+        position: 'top-right',
+        offsetX: -320,
+        offsetY: 120,
+        rotation: 3,
+        section: 'contact'
+    },
+    {
+        selector: '.event-packages-section',
+        position: 'top-left',
+        offsetX: 40,
+        offsetY: 100,
+        rotation: -6,
+        section: 'events'
+    }
+];
+
 const scrollingReviews = document.getElementById('scrollingReviews');
 let lastScrollPos = 0;
-const triggerDistance = 600;
+const triggerDistance = 1000;
 let reviewCount = 0;
+let usedZones = new Set();
+
+function getZonePosition(zone) {
+    // Găsește elementul din pagină
+    const element = document.querySelector(zone.selector);
+    if (!element) return null;
+
+    // Obține poziția elementului
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    let x, y;
+
+    // Calculează poziția bazată pe position
+    switch (zone.position) {
+        case 'top-left':
+            x = rect.left + zone.offsetX;
+            y = rect.top + scrollTop + zone.offsetY;
+            break;
+        case 'top-right':
+            x = rect.right + zone.offsetX; // offsetX e negativ
+            y = rect.top + scrollTop + zone.offsetY;
+            break;
+        case 'bottom-left':
+            x = rect.left + zone.offsetX;
+            y = rect.bottom + scrollTop + zone.offsetY;
+            break;
+        case 'bottom-right':
+            x = rect.right + zone.offsetX;
+            y = rect.bottom + scrollTop + zone.offsetY;
+            break;
+        default:
+            x = rect.left + zone.offsetX;
+            y = rect.top + scrollTop + zone.offsetY;
+    }
+
+    return { x, y, rotation: zone.rotation };
+}
 
 function createReview() {
+    // Skip if overlays are open
+    if (shopPage?.classList.contains('active')) return;
+    if (galleryPage?.classList.contains('active')) return;
+
+    // Get available zones
+    const availableZones = SECTION_REVIEW_ZONES.filter((_, index) => !usedZones.has(index));
+
+    if (availableZones.length === 0) {
+        usedZones.clear();
+        return;
+    }
+
+    // Pick random zone
+    const zone = availableZones[Math.floor(Math.random() * availableZones.length)];
+    const zoneIndex = SECTION_REVIEW_ZONES.indexOf(zone);
+
+    // Get actual position from element
+    const position = getZonePosition(zone);
+    if (!position) return; // Element not found
+
+    usedZones.add(zoneIndex);
+
     const data = REVIEW_DATA[reviewCount % REVIEW_DATA.length];
-    const side = reviewCount % 2 === 0 ? 'left' : 'right';
-    const top = 200 + (Math.random() * 300);
-    const rotation = (Math.random() * 20) - 10;
 
     const colors = ['#859F3D', '#FFD700', '#ffffff'];
     const bgColor = colors[reviewCount % 3];
 
     const review = document.createElement('div');
     review.className = 'review-card';
+
+    // Position ABSOLUTE relative to page
     review.style.cssText = `
-        top: ${top}px;
-        ${side}: 20px;
-        transform: rotate(${rotation}deg);
+        position: absolute;
+        left: ${position.x}px;
+        top: ${position.y}px;
+        transform: rotate(${position.rotation}deg);
         background: ${bgColor};
         color: #000;
+        width: 280px;
     `;
 
     review.innerHTML = `
-        <div class="review-bubble-tail" style="
-            ${side === 'left' ? 'left: 16px;' : 'right: 16px;'}
-            background: ${bgColor};
-        "></div>
+        <div class="review-bubble-tail" style="background: ${bgColor};"></div>
         <p class="review-text">"${data.text}"</p>
         <div class="review-author-wrapper">
             <span class="review-divider"></span>
@@ -566,12 +728,36 @@ function createReview() {
 
     setTimeout(() => {
         review.classList.add('fade-out');
-        setTimeout(() => review.remove(), 1000);
-    }, 4000);
+        setTimeout(() => {
+            review.remove();
+            usedZones.delete(zoneIndex);
+        }, 1000);
+    }, 6000);
 }
 
+// Trigger when entering sections
+const observeReviewTriggers = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            createReview();
+        }
+    });
+}, {
+    threshold: 0.3
+});
+
+// Observe sections
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.shop-section, .gallery-section, .contact-section, .event-packages-section');
+    sections.forEach(section => {
+        observeReviewTriggers.observe(section);
+    });
+});
+
+// Also trigger on scroll
 window.addEventListener('scroll', () => {
-    if (shopPage && shopPage.classList.contains('active')) return;
+    if (shopPage?.classList.contains('active')) return;
+    if (galleryPage?.classList.contains('active')) return;
 
     const currentScroll = window.scrollY;
     const diff = Math.abs(currentScroll - lastScrollPos);
@@ -581,6 +767,8 @@ window.addEventListener('scroll', () => {
         createReview();
     }
 });
+
+console.log('🎨 Reviews with section-based zones loaded!');
 
 /* ============================================
    INITIALIZATION

@@ -44,7 +44,7 @@
                 <li><button class="nav-link" data-section="pachete">PACHETE</button></li>
                 <li><button class="nav-link" data-section="contact">CONTACT</button></li>
 
-                <!-- CART BUTTON (NOU) -->
+                <!-- CART BUTTON (Desktop) -->
                 <li>
                     <button class="cart-button" id="cartButton">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,24 +58,36 @@
                 <li><button class="btn-order" id="btnOpenShop">SHOP</button></li>
             </ul>
 
-            <!-- Mobile Toggle -->
-            <button class="mobile-toggle" id="mobileToggle">
-                <div>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
+            <!-- Mobile Controls: Cart + Hamburger -->
+            <div class="mobile-controls">
+                <!-- CART BUTTON (Mobile)-->
+                <button class="cart-button" id="cartButtonMobile">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span class="cart-count" id="cartCountMobile" style="display: none;">0</span>
+                </button>
+
+                <!-- Hamburger Toggle -->
+                <button class="mobile-toggle" id="mobileToggle">
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
         </nav>
 
         <!-- Mobile Menu -->
         <div class="mobile-menu" id="mobileMenu">
             <button class="mobile-link" data-section="home">HOME</button>
-            <button class="mobile-link" data-section="shop">SHOP</button>
+            <button class="mobile-link" data-section="shop">SERVICII</button>
             <button class="mobile-link" data-section="galerie">GALERIE</button>
-            <button class="mobile-link" data-section="contact">CONTACT</button>
             <button class="mobile-link" data-section="pachete">PACHETE</button>
-            <button class="btn-order" id="btnOpenShopMobile">BUY NOW</button>
+            <button class="mobile-link" data-section="contact">CONTACT</button>
+            <button class="btn-order" id="btnOpenShopMobile">ORDER!</button>
         </div>
     </header>
 
@@ -541,7 +553,7 @@
                 <svg fill="currentColor" viewBox="0 0 24 24" style="width: 128px; height: 128px; opacity: 0.1;">
                     <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <p class="cart-empty-text">COȘUL E GOL...</p>
+                <p class="cart-empty-text">COSUL E GOL...</p>
                 <p class="cart-empty-subtext">Mergi la magazin și adaugă artă!</p>
             </div>
 

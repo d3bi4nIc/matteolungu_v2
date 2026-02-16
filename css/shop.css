@@ -750,41 +750,46 @@
 }
 
 /* ============================================
-   SCROLLING REVIEWS
+   SCROLLING REVIEWS - SECTION-BASED
+   Update in shop.css
 ============================================ */
 
 .scrolling-reviews {
-    position: fixed;
-    inset: 0;
+    position: absolute;  /* IMPORTANT - absolute not fixed! */
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
     pointer-events: none;
     z-index: 50;
-    overflow: hidden;
+    overflow: visible;
+}
+
+/* Make sure body is positioned */
+body {
+    position: relative;
 }
 
 .review-card {
     position: absolute;
     width: 280px;
-    padding: 24px;
+    padding: 20px;
     border: 3px solid var(--black);
     box-shadow: 6px 6px 0px #859F3D;
     pointer-events: none;
-    animation: reviewPeel 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    transform-origin: top left;
+    animation: reviewPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform-origin: center;
+    z-index: 50;
 }
 
-@keyframes reviewPeel {
+@keyframes reviewPop {
     0% {
         opacity: 0;
-        transform: rotateX(-90deg) rotateY(20deg) scale(0.5);
-        clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    }
-    50% {
-        opacity: 1;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        transform: scale(0.8) rotate(0deg);
     }
     100% {
         opacity: 1;
-        transform: rotateX(0) rotateY(0) scale(1);
+        transform: scale(1);
     }
 }
 
@@ -795,13 +800,14 @@
 @keyframes fadeOut {
     to {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0.95);
     }
 }
 
 .review-bubble-tail {
     position: absolute;
     bottom: -16px;
+    left: 16px;
     width: 32px;
     height: 32px;
     border-bottom: 4px solid var(--black);
@@ -811,7 +817,7 @@
 
 .review-text {
     font-family: 'Permanent Marker', cursive;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 12px;
 }
@@ -848,6 +854,19 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     transform: rotate(-5deg);
+}
+
+/* Hide when overlays are open */
+.shop-page.active ~ .scrolling-reviews,
+.gallery-page.active ~ .scrolling-reviews {
+    display: none;
+}
+
+/* Hide on small screens */
+@media (max-width: 768px) {
+    .scrolling-reviews {
+        display: none;
+    }
 }
 
 /* ============================================

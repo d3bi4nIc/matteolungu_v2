@@ -40,10 +40,11 @@ body::before {
     pointer-events: none;
     z-index: 0;
     opacity: 0.15;
-    background-image: 
+    background-image:
         linear-gradient(rgba(133, 159, 61, 0.15) 1px, transparent 1px),
         linear-gradient(90deg, rgba(133, 159, 61, 0.15) 1px, transparent 1px);
-    background-size: 80px 80px; /* Large mesh size */
+    background-size: 80px 80px;
+    /* Large mesh size */
     background-position: 0 0;
 }
 
@@ -96,22 +97,23 @@ ul {
 
 /* Custom Scrollbar */
 /* Pentru browsere Webkit (Chrome, Safari, Edge) */
-::-webkit-scrollbar { 
-    width: 10px; 
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-::-webkit-scrollbar-track { 
-    background: #0d0d0c; 
+::-webkit-scrollbar-track {
+    background: #0d0d0c;
 }
 
-::-webkit-scrollbar-thumb { 
-    background: #859F3D; 
+::-webkit-scrollbar-thumb {
+    background: #859F3D;
     border: 3px solid #0d0d0c;
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a8c256; /* Lighter green on hover */
+    background: #a8c256;
+    /* Lighter green on hover */
 }
 
 /* Pentru Firefox */
@@ -251,8 +253,15 @@ h3 {
 }
 
 @keyframes fastSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(720deg); }  /* 2 rotații complete */
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(720deg);
+    }
+
+    /* 2 rotații complete */
 }
 
 /* Optional: logo box tilt */
@@ -363,20 +372,23 @@ h3 {
     /* hover:shadow-none */
 }
 
-/* Mobile Toggle */
+/* ============================================
+   MOBILE MENU - FIXED VERSION
+============================================ */
+
+/* Mobile Toggle Button */
 .mobile-toggle {
     display: none;
-    /* hidden on desktop */
     width: 48px;
-    /* w-12 */
     height: 48px;
-    /* h-12 */
     background: var(--white);
     border: 3px solid var(--black);
     align-items: center;
     justify-content: center;
     cursor: pointer;
     padding: 0;
+    position: relative;
+    z-index: 250;
 }
 
 /* Hamburger lines container */
@@ -384,19 +396,16 @@ h3 {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    /* space-y-1.5 */
 }
 
 .mobile-toggle span {
     width: 28px;
-    /* w-7 */
     height: 4px;
-    /* h-1 */
     background: var(--black);
     transition: all 0.3s ease;
 }
 
-/* Active state animations */
+/* Active state (X) */
 .mobile-toggle.active span:nth-child(1) {
     transform: rotate(45deg) translateY(10px);
 }
@@ -409,63 +418,185 @@ h3 {
     transform: rotate(-45deg) translateY(-10px);
 }
 
-/* Mobile Menu Overlay */
+/* ============================================
+   MOBILE CONTROLS - Cart + Hamburger în header
+============================================ */
+
+.mobile-controls {
+    display: none;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Cart Button - același stil desktop și mobile */
+.cart-button {
+    position: relative;
+    padding: 8px;
+    background: var(--white);
+    border: 3px solid var(--black);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 4px 4px 0px #859F3D;
+}
+
+.cart-button:hover {
+    transform: scale(1.1);
+}
+
+.cart-button svg {
+    width: 24px;
+    height: 24px;
+    color: var(--black);
+}
+
+.cart-count {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 32px;
+    height: 32px;
+    background: #FFD700;
+    border: 2px solid var(--black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bangers', cursive;
+    font-size: 1.125rem;
+    color: var(--black);
+}
+
+/* RESPONSIVE */
+@media (max-width: 767px) {
+
+    /* Show mobile controls */
+    .mobile-controls {
+        display: flex;
+    }
+
+    .mobile-toggle {
+        display: flex;
+    }
+
+    .mobile-menu {
+        display: flex;
+    }
+
+    /* Hide desktop nav */
+    .nav-links {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   MOBILE MENU - CLEAN & COMPACT
+============================================ */
+
 .mobile-menu {
     position: fixed;
-    inset: 0;
-    /* top-0 right-0 bottom-0 left-0 */
-    background: #859F3D;
-    z-index: 40;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0a0a0a;
+    /* Solid black - nu transparent! */
+    z-index: 200;
+    /* Peste tot */
     display: none;
-    /* Hidden on desktop */
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 40px;
-    /* gap-10 */
+    gap: 20px;
     transform: translateX(100%);
     transition: transform 0.5s ease;
+    padding: 0;
+    overflow-y: auto;
+    /* Scroll dacă e nevoie */
 }
 
 .mobile-menu.active {
     transform: translateX(0);
 }
 
+/* Links */
 .mobile-link {
     font-family: 'Bangers', cursive;
-    font-size: 3.75rem;
-    /* text-6xl */
+    font-size: 2rem;
     text-transform: uppercase;
-    letter-spacing: -0.05em;
-    /* tracking-tighter */
-    color: var(--black);
+    letter-spacing: 0.05em;
+    color: var(--white);
     background: none;
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
 }
 
-.mobile-link:hover {
-    transform: scale(1.1);
+.mobile-link:hover,
+.mobile-link:active {
+    color: #859F3D;
+    transform: scale(1.05);
 }
 
-/* Mobile Order Button */
+/* Order Button */
 .mobile-menu .btn-order {
-    display: block;
-    margin-top: 32px;
-    /* mt-8 */
-    padding: 20px 48px;
-    /* px-12 py-5 */
-    background: var(--white);
-    border: 4px solid var(--black);
+    padding: 14px 36px;
+    background: #FFD700;
+    border: 3px solid var(--black);
     color: var(--black);
     font-family: 'Bangers', cursive;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-size: 1.875rem;
-    /* text-3xl */
-    box-shadow: 8px 8px 0px #000;
+    font-size: 1.5rem;
+    box-shadow: 5px 5px 0px #859F3D;
+    cursor: pointer;
+    margin-top: 20px;
 }
+
+/* Order Button - MAI MIC */
+.mobile-menu .btn-order {
+    display: block;
+    margin-top: 16px;
+    padding: 12px 32px;
+    /* Mai mic - era 16px 40px */
+    background: #FFD700;
+    border: 3px solid var(--black);
+    color: var(--black);
+    font-family: 'Bangers', cursive;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 1.25rem;
+    /* Mai mic - era 1.5rem */
+    box-shadow: 4px 4px 0px #859F3D;
+    cursor: pointer;
+}
+
+/* Prevent scrolling when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Show mobile toggle on small screens */
+@media (max-width: 767px) {
+    .mobile-toggle {
+        display: flex;
+    }
+
+    .mobile-menu {
+        display: flex;
+    }
+
+    /* Hide desktop nav */
+    .nav-links {
+        display: none !important;
+    }
+}
+
+/* Prevent scrolling when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
 
 /* ============================================
    COMPACT HERO - FLOATING STICKER VERSION
@@ -479,7 +610,8 @@ h3 {
     align-items: center;
     justify-content: center;
     padding: 140px 60px 60px;
-    overflow: visible;  /* CRITIC! */
+    overflow: visible;
+    /* CRITIC! */
     background: var(--black);
 }
 
@@ -522,7 +654,7 @@ h3 {
 
 .hero-photo-circle:hover {
     transform: scale(1.05) rotate(-2deg);
-} 
+}
 
 .hero-photo-circle img {
     width: 100%;
@@ -567,7 +699,8 @@ h3 {
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.03em;
-    line-height: 0.9;  /* Strâns - mai puțin spațiu între rânduri */
+    line-height: 0.9;
+    /* Strâns - mai puțin spațiu între rânduri */
     font-style: italic;
     margin: 0;
     padding: 0;
@@ -576,16 +709,14 @@ h3 {
 /* Shadow diferit pentru alb */
 .title-white {
     color: var(--white);
-    text-shadow: 
-        6px 6px 0px rgba(133, 159, 61, 0.9),
+    text-shadow: 6px 6px 0px rgba(133, 159, 61, 0.9),
         3px 3px 0px rgba(133, 159, 61, 0.6);
 }
 
 /* Shadow mai subtil pentru verde */
 .title-green {
     color: #859F3D;
-    text-shadow: 
-        4px 4px 0px rgba(0, 0, 0, 0.3),
+    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3),
         2px 2px 0px rgba(0, 0, 0, 0.15);
 }
 
@@ -632,8 +763,7 @@ h3 {
     letter-spacing: 0.05em;
     border: 4px solid var(--black);
     border-radius: 2px;
-    box-shadow:
-        12px 12px 0px 0px #859F3D,
+    box-shadow: 12px 12px 0px 0px #859F3D,
         6px 6px 0px 6px var(--black);
     transition: all 0.15s ease;
     cursor: pointer;
@@ -642,8 +772,7 @@ h3 {
 .hero-buttons-new .btn-primary:hover {
     background: var(--white);
     transform: translate(-3px, -3px);
-    box-shadow:
-        18px 18px 0px 0px #859F3D,
+    box-shadow: 18px 18px 0px 0px #859F3D,
         12px 12px 0px 6px var(--black);
 }
 
@@ -657,8 +786,7 @@ h3 {
     letter-spacing: 0.05em;
     border: 4px solid var(--white);
     border-radius: 2px;
-    box-shadow:
-        12px 12px 0px 0px #859F3D,
+    box-shadow: 12px 12px 0px 0px #859F3D,
         6px 6px 0px 6px var(--black);
     transition: all 0.15s ease;
     cursor: pointer;
@@ -669,9 +797,68 @@ h3 {
     color: var(--black);
     border-color: var(--black);
     transform: translate(-3px, -3px);
-    box-shadow:
-        18px 18px 0px 0px #859F3D,
+    box-shadow: 18px 18px 0px 0px #859F3D,
         12px 12px 0px 6px var(--black);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE - BUTOANE SIDE BY SIDE
+============================================ */
+
+@media (max-width: 768px) {
+    .hero-buttons-new {
+        flex-direction: row;  /* Side by side, nu column! */
+        justify-content: center;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .hero-buttons-new .btn-primary,
+    .hero-buttons-new .btn-secondary {
+        flex: 1;  /* Împart spațiul egal */
+        max-width: 160px;  /* Mai înguste */
+        padding: 16px 20px;  /* Padding mai mic */
+        font-size: 1.125rem;  /* Font mai mic */
+        border: 3px solid var(--black);
+        box-shadow: 
+            5px 5px 0px 0px #859F3D,
+            3px 3px 0px 3px var(--black);
+        text-align: center;
+    }
+
+    .hero-buttons-new .btn-primary:active {
+        transform: translate(2px, 2px);
+        box-shadow: 
+            3px 3px 0px 0px #859F3D,
+            2px 2px 0px 2px var(--black);
+    }
+
+    .hero-buttons-new .btn-secondary {
+        border: 3px solid var(--white);
+    }
+
+    .hero-buttons-new .btn-secondary:active {
+        transform: translate(2px, 2px);
+        box-shadow: 
+            3px 3px 0px 0px #859F3D,
+            2px 2px 0px 2px var(--black);
+    }
+}
+
+@media (max-width: 380px) {
+    /* Pe ecrane FOARTE mici, stack vertical */
+    .hero-buttons-new {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-buttons-new .btn-primary,
+    .hero-buttons-new .btn-secondary {
+        max-width: 240px;
+        width: 100%;
+    }
 }
 
 /* ============================================
@@ -687,7 +874,8 @@ h3 {
 }
 
 .hero-right {
-    display: none;  /* Ascuns! */
+    display: none;
+    /* Ascuns! */
 }
 
 .multistarz-sticker-wrapper {
@@ -696,11 +884,14 @@ h3 {
 }
 
 @keyframes floatSticker {
-    0%, 100% { 
-        transform: translateY(0) rotate(12deg); 
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(12deg);
     }
-    50% { 
-        transform: translateY(-15px) rotate(8deg); 
+
+    50% {
+        transform: translateY(-15px) rotate(8deg);
     }
 }
 
@@ -726,16 +917,19 @@ h3 {
     object-fit: contain;
     position: relative;
     z-index: 10;
-    
+
     /* Outline alb în jurul SVG-ului */
-    filter: 
-        drop-shadow(0 0 0 4px white)           /* Outline alb 4px */
-        drop-shadow(0 0 0 6px var(--black))    /* Border negru peste */
-        drop-shadow(5px 5px 8px rgba(0, 0, 0, 0.3));  /* Shadow pentru depth */
-    
+    filter: drop-shadow(0 0 0 4px white)
+        /* Outline alb 4px */
+        drop-shadow(0 0 0 6px var(--black))
+        /* Border negru peste */
+        drop-shadow(5px 5px 8px rgba(0, 0, 0, 0.3));
+    /* Shadow pentru depth */
+
     /* Background alb în spatele SVG-ului */
     background: white;
-    padding: 15px;  /* Spațiu alb în jurul SVG-ului */
+    padding: 15px;
+    /* Spațiu alb în jurul SVG-ului */
 }
 
 /* Scotch tape on top - OPTIONAL */
@@ -747,14 +941,11 @@ h3 {
     transform: translateX(-50%) rotate(3deg);
     width: 50%;
     height: 18px;
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.5),
-        rgba(255, 255, 255, 0.3)
-    );
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.3));
     border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 
-        0 2px 3px rgba(0, 0, 0, 0.15),
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15),
         inset 0 1px 2px rgba(255, 255, 255, 0.6);
     border-radius: 2px;
     pointer-events: none;
@@ -763,7 +954,8 @@ h3 {
 
 /* HIDE the yellow label */
 .multistarz-label {
-    display: none;  /* Gone! */
+    display: none;
+    /* Gone! */
 }
 
 /* ============================================
@@ -793,6 +985,7 @@ h3 {
 }
 
 @media (max-width: 1024px) {
+
     /* Sticker goes below on mobile */
     .hero-right {
         position: relative;
@@ -919,29 +1112,6 @@ h3 {
     .hero-subtitle-new p {
         font-size: 1.25rem;
     }
-
-    .hero-buttons-new {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .hero-buttons-new .btn-primary,
-    .hero-buttons-new .btn-secondary {
-        width: 100%;
-        padding: 20px 40px;
-        font-size: 1.5rem;
-    }
-
-    .multistarz-circle {
-        width: 220px;
-        height: 220px;
-        padding: 25px;
-    }
-
-    .multistarz-label {
-        font-size: 0.875rem;
-        padding: 8px 20px;
-    }
 }
 
 /* ============================================
@@ -960,11 +1130,9 @@ h3 {
     opacity: 0.2;
     background-image: radial-gradient(#859F3D 1.5px, transparent 1.5px);
     background-size: 25px 25px;
-    mask-image: radial-gradient(
-        ellipse 1200px 1000px at top left, 
-        black 20%, 
-        transparent 60%
-    );
+    mask-image: radial-gradient(ellipse 1200px 1000px at top left,
+            black 20%,
+            transparent 60%);
 }
 
 .hero::after {
@@ -979,11 +1147,9 @@ h3 {
     opacity: 0.2;
     background-image: radial-gradient(#859F3D 1.5px, transparent 1.5px);
     background-size: 25px 25px;
-    mask-image: radial-gradient(
-        ellipse 1000px 900px at bottom right, 
-        black 20%, 
-        transparent 60%
-    );
+    mask-image: radial-gradient(ellipse 1000px 900px at bottom right,
+            black 20%,
+            transparent 60%);
 }
 
 /* ============================================
@@ -992,12 +1158,14 @@ h3 {
 
 .shop-section {
     padding: 100px 24px;
-    max-width: 1280px; /* max-w-7xl */
+    max-width: 1280px;
+    /* max-w-7xl */
     margin: 0 auto;
 }
 
 .section-header {
-    margin-bottom: 80px; /* mb-20 */
+    margin-bottom: 80px;
+    /* mb-20 */
     text-align: center;
     position: relative;
 }
@@ -1011,11 +1179,11 @@ h3 {
     color: var(--black);
     padding: 4px 12px;
     font-family: 'Bangers', cursive;
-    font-size: 0.875rem; /* text-sm */
+    font-size: 0.875rem;
+    /* text-sm */
     transform: rotate(12deg);
     border: 3px solid var(--black);
-    box-shadow:
-        6px 6px 0px 0px var(--green),
+    box-shadow: 6px 6px 0px 0px var(--green),
         4px 4px 0px 4px var(--black);
     z-index: 10;
 }
@@ -1024,7 +1192,8 @@ h3 {
     position: relative;
     display: inline-block;
     margin-bottom: 24px;
-    font-size: clamp(2rem, 10vw, 6rem); /* Smaller min size for mobile */
+    font-size: clamp(2rem, 10vw, 6rem);
+    /* Smaller min size for mobile */
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.05em;
@@ -1039,10 +1208,14 @@ h3 {
 }
 
 .section-subtitle {
-    font-family: 'Permanent Marker', cursive; /* font-marker */
-    color: rgba(255, 255, 255, 0.6); /* text-white/60 */
-    font-size: 1.125rem; /* text-lg */
-    max-width: 672px; /* max-w-2xl */
+    font-family: 'Permanent Marker', cursive;
+    /* font-marker */
+    color: rgba(255, 255, 255, 0.6);
+    /* text-white/60 */
+    font-size: 1.125rem;
+    /* text-lg */
+    max-width: 672px;
+    /* max-w-2xl */
     margin: 0 auto;
 }
 
@@ -1053,7 +1226,8 @@ h3 {
 .shop-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 40px; /* gap-10 */
+    gap: 40px;
+    /* gap-10 */
 }
 
 /* ============================================
@@ -1063,7 +1237,8 @@ h3 {
 .shop-card {
     position: relative;
     background: var(--white);
-    padding: 24px 12px 32px; /* p-3 pt-6 pb-8 */
+    padding: 24px 12px 32px;
+    /* p-3 pt-6 pb-8 */
     border: 3px solid var(--black);
     box-shadow: 3px 3px 0px var(--black);
     cursor: pointer;
@@ -1071,7 +1246,8 @@ h3 {
 }
 
 .shop-card:hover {
-    transform: translateY(-16px) rotate(2deg); /* hover:-translate-y-4 hover:rotate-2 */
+    transform: translateY(-16px) rotate(2deg);
+    /* hover:-translate-y-4 hover:rotate-2 */
 }
 
 /* Colored Top Strip */
@@ -1081,23 +1257,28 @@ h3 {
     top: 0;
     left: 0;
     width: 100%;
-    height: 16px; /* h-4 */
+    height: 16px;
+    /* h-4 */
 }
 
 .shop-card[data-border="blue"]::before {
-    background: #3b82f6; /* bg-blue-500 */
+    background: #3b82f6;
+    /* bg-blue-500 */
 }
 
 .shop-card[data-border="yellow"]::before {
-    background: #eab308; /* bg-yellow-500 */
+    background: #eab308;
+    /* bg-yellow-500 */
 }
 
 .shop-card[data-border="green"]::before {
-    background: #22c55e; /* bg-green-500 */
+    background: #22c55e;
+    /* bg-green-500 */
 }
 
 .shop-card[data-border="red"]::before {
-    background: #ef4444; /* bg-red-500 */
+    background: #ef4444;
+    /* bg-red-500 */
 }
 
 /* ============================================
@@ -1106,10 +1287,12 @@ h3 {
 
 .card-image {
     position: relative;
-    aspect-ratio: 3/4; /* aspect-[3/4] */
+    aspect-ratio: 3/4;
+    /* aspect-[3/4] */
     overflow: hidden;
     border: 2px solid var(--black);
-    margin-bottom: 24px; /* mb-6 */
+    margin-bottom: 24px;
+    /* mb-6 */
 }
 
 .card-image img {
@@ -1133,8 +1316,10 @@ h3 {
     background: var(--black);
     color: var(--white);
     font-family: 'Bangers', cursive;
-    font-size: 0.625rem; /* text-[10px] */
-    letter-spacing: 0.1em; /* tracking-widest */
+    font-size: 0.625rem;
+    /* text-[10px] */
+    letter-spacing: 0.1em;
+    /* tracking-widest */
     text-transform: uppercase;
 }
 
@@ -1148,12 +1333,17 @@ h3 {
 }
 
 .card-content h3 {
-    font-size: 2.25rem; /* text-4xl */
-    font-weight: 900; /* font-black */
+    font-size: 2.25rem;
+    /* text-4xl */
+    font-weight: 900;
+    /* font-black */
     text-transform: uppercase;
-    letter-spacing: -0.025em; /* tracking-tight */
-    margin-bottom: 8px; /* mb-2 */
-    line-height: 1; /* leading-none */
+    letter-spacing: -0.025em;
+    /* tracking-tight */
+    margin-bottom: 8px;
+    /* mb-2 */
+    line-height: 1;
+    /* leading-none */
     transition: color 0.3s ease;
 }
 
@@ -1162,23 +1352,31 @@ h3 {
 }
 
 .card-content p {
-    font-family: 'Permanent Marker', cursive; /* font-marker */
-    font-size: 0.75rem; /* text-xs */
-    color: #4b5563; /* text-gray-600 */
-    margin-bottom: 24px; /* mb-6 */
-    line-height: 1.2; /* leading-tight */
+    font-family: 'Permanent Marker', cursive;
+    /* font-marker */
+    font-size: 0.75rem;
+    /* text-xs */
+    color: #4b5563;
+    /* text-gray-600 */
+    margin-bottom: 24px;
+    /* mb-6 */
+    line-height: 1.2;
+    /* leading-tight */
 }
 
 .btn-card {
     display: block;
     width: 100%;
-    padding: 12px 0; /* py-3 */
+    padding: 12px 0;
+    /* py-3 */
     background: var(--black);
     color: var(--white);
     font-family: 'Bangers', cursive;
-    font-size: 1.125rem; /* text-lg */
+    font-size: 1.125rem;
+    /* text-lg */
     text-transform: uppercase;
-    letter-spacing: 0.1em; /* tracking-widest */
+    letter-spacing: 0.1em;
+    /* tracking-widest */
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1195,12 +1393,15 @@ h3 {
 
 .price-badge {
     position: absolute;
-    bottom: -16px; /* -bottom-4 */
-    right: -8px; /* -right-2 */
+    bottom: -16px;
+    /* -bottom-4 */
+    right: -8px;
+    /* -right-2 */
     background: var(--white);
     border: 2px solid var(--black);
     padding: 4px;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* shadow-md */
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    /* shadow-md */
     z-index: 20;
 }
 
@@ -1211,7 +1412,8 @@ h3 {
     color: var(--black);
     padding: 4px 8px;
     font-family: 'Bangers', cursive;
-    font-size: 0.75rem; /* text-xs */
+    font-size: 0.75rem;
+    /* text-xs */
 }
 
 /* ============================================
@@ -1293,12 +1495,29 @@ h3 {
 }
 
 /* Random tilts */
-.polaroid:nth-child(1) { transform: rotate(-2deg); }
-.polaroid:nth-child(2) { transform: rotate(1deg); }
-.polaroid:nth-child(3) { transform: rotate(2deg); }
-.polaroid:nth-child(4) { transform: rotate(1deg); }
-.polaroid:nth-child(5) { transform: rotate(-1deg); }
-.polaroid:nth-child(6) { transform: rotate(2deg); }
+.polaroid:nth-child(1) {
+    transform: rotate(-2deg);
+}
+
+.polaroid:nth-child(2) {
+    transform: rotate(1deg);
+}
+
+.polaroid:nth-child(3) {
+    transform: rotate(2deg);
+}
+
+.polaroid:nth-child(4) {
+    transform: rotate(1deg);
+}
+
+.polaroid:nth-child(5) {
+    transform: rotate(-1deg);
+}
+
+.polaroid:nth-child(6) {
+    transform: rotate(2deg);
+}
 
 .polaroid:hover {
     transform: rotate(0deg) scale(1.05);
@@ -1401,8 +1620,7 @@ h3 {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border: 4px solid var(--black);
-    box-shadow:
-        10px 10px 0px 0px #859F3D,
+    box-shadow: 10px 10px 0px 0px #859F3D,
         5px 5px 0px 5px var(--black);
     transition: all 0.15s ease;
     cursor: pointer;
@@ -1412,8 +1630,7 @@ h3 {
 .btn-view-gallery:hover {
     background: var(--white);
     transform: translate(-3px, -3px);
-    box-shadow:
-        16px 16px 0px 0px #859F3D,
+    box-shadow: 16px 16px 0px 0px #859F3D,
         10px 10px 0px 5px var(--black);
 }
 
@@ -1495,7 +1712,7 @@ h3 {
     font-style: italic;
 }
 
-.contact-header > p {
+.contact-header>p {
     font-family: 'Permanent Marker', cursive;
     color: rgba(255, 255, 255, 0.7);
     font-size: 1.5rem;
@@ -1618,6 +1835,69 @@ h3 {
 
 .contact-card:hover .contact-arrow {
     transform: scale(1.25);
+}
+
+/* ============================================
+   CONTACT CARDS - ULTRA COMPACT MOBILE
+============================================ */
+
+@media (max-width: 768px) {
+    .contact-cards {
+        gap: 12px;  /* Mai mic gap între carduri */
+        padding-top: 0;
+    }
+
+    .contact-card {
+        padding: 12px 16px;  /* Foarte compacte */
+        max-width: 100%;
+        box-shadow: 2px 2px 0px var(--black);
+        transform: rotate(0deg) !important;  /* Fără tilt */
+    }
+
+    .contact-card:hover {
+        transform: scale(1.01) !important;  /* Minimal hover */
+    }
+
+    .contact-card-content {
+        gap: 12px;  /* Mai mic gap */
+    }
+
+    .contact-icon {
+        padding: 8px;  /* Icon și mai mic */
+        flex-shrink: 0;
+    }
+
+    .contact-icon svg {
+        width: 20px;  /* Icon mai mic */
+        height: 20px;
+    }
+
+    .contact-info h3 {
+        font-size: 0.5rem;  /* Label foarte mic */
+        margin-bottom: 2px;
+        text-transform: uppercase;
+    }
+
+    .contact-info p {
+        font-size: 1.125rem;  /* Text mai mic */
+        letter-spacing: -0.01em;
+        font-weight: 700;
+    }
+
+    /* ASCUNDE SĂGEATA */
+    .contact-arrow {
+        display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-card {
+        padding: 10px 14px;  /* Și mai compacte */
+    }
+
+    .contact-info p {
+        font-size: 1rem;  /* Și mai mic textul */
+    }
 }
 
 /* ============================================
@@ -1802,8 +2082,10 @@ h3 {
 
 .footer {
     background: var(--black);
-    border-top: 4px solid #859F3D; /* Thinner border */
-    padding: 40px 24px; /* Reduced padding - slimmer */
+    border-top: 4px solid #859F3D;
+    /* Thinner border */
+    padding: 40px 24px;
+    /* Reduced padding - slimmer */
     position: relative;
     overflow: hidden;
 }
@@ -1818,7 +2100,7 @@ h3 {
     height: 256px;
     opacity: 0.05;
     transform: translateY(-50%);
-    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
     background-size: 10px 10px;
 }
 
@@ -1826,7 +2108,8 @@ h3 {
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    flex-direction: row; /* Always row - single line */
+    flex-direction: row;
+    /* Always row - single line */
     align-items: center;
     justify-content: space-between;
     gap: 40px;
@@ -1851,18 +2134,16 @@ h3 {
 }
 
 .footer-brand .logo-mark {
-    width: 56px; /* Smaller */
-    height: 56px;
-    background: var(--white);
-    border: 3px solid var(--black); /* Thinner border */
+    width: 75px;
+    /* Smaller */
+    height: 75px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Bangers', cursive;
     color: var(--black);
-    font-size: 1.75rem; /* Smaller text */
-    transform: rotate(3deg);
-    box-shadow: 4px 4px 0px #859F3D; /* Smaller shadow */
+    font-size: 1.75rem;
+    /* Smaller text */
 }
 
 .footer-text {
@@ -1872,7 +2153,8 @@ h3 {
 }
 
 .footer-text h4 {
-    font-size: 1.5rem; /* Smaller */
+    font-size: 1.5rem;
+    /* Smaller */
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.025em;
@@ -1883,13 +2165,15 @@ h3 {
 .footer-text p {
     font-family: 'Permanent Marker', cursive;
     color: #859F3D;
-    font-size: 0.75rem; /* Smaller */
+    font-size: 0.75rem;
+    /* Smaller */
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .footer-copyright {
-    font-size: 0.7rem; /* Smaller */
+    font-size: 0.7rem;
+    /* Smaller */
     font-family: 'Bangers', cursive;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -1904,12 +2188,14 @@ h3 {
 .footer-links {
     display: flex;
     align-items: center;
-    gap: 32px; /* Consistent spacing */
+    gap: 32px;
+    /* Consistent spacing */
 }
 
 .footer-links a {
     font-family: 'Bangers', cursive;
-    font-size: 1rem; /* Smaller */
+    font-size: 1rem;
+    /* Smaller */
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: rgba(255, 255, 255, 0.5);
@@ -1927,9 +2213,11 @@ h3 {
 
 /* Scroll to Top Button */
 .scroll-top {
-    width: 44px; /* Smaller */
+    width: 44px;
+    /* Smaller */
     height: 44px;
-    background: #859F3D; /* Green background like in screenshot */
+    background: #859F3D;
+    /* Green background like in screenshot */
     border: 3px solid var(--black);
     color: var(--black);
     display: flex;
@@ -1941,7 +2229,8 @@ h3 {
     cursor: pointer;
     transition: all 0.3s ease;
     transform: rotate(0deg);
-    flex-shrink: 0; /* Don't shrink */
+    flex-shrink: 0;
+    /* Don't shrink */
 }
 
 .scroll-top:hover {
@@ -1969,7 +2258,8 @@ h3 {
     transition: opacity 0.3s ease;
     border-radius: inherit;
     overflow: hidden;
-    mix-blend-mode: screen; /* Changed from color-dodge for more gold */
+    mix-blend-mode: screen;
+    /* Changed from color-dodge for more gold */
 }
 
 /* Make card image and content relative for z-index */
@@ -1984,23 +2274,35 @@ h3 {
     content: '';
     position: absolute;
     inset: 0;
-    background: 
-        radial-gradient(ellipse at 30% 30%, rgba(255, 0, 255, 0.25) 0%, transparent 50%),    /* Magenta - BOOSTED */
-        radial-gradient(ellipse at 70% 70%, rgba(0, 255, 255, 0.25) 0%, transparent 50%),    /* Cyan - BOOSTED */
-        radial-gradient(ellipse at 50% 50%, rgba(255, 255, 0, 0.2) 0%, transparent 60%),     /* Yellow - BOOSTED */
-        linear-gradient(135deg, 
-            rgba(255, 0, 255, 0.15) 0%,      /* Magenta - BOOSTED */
-            rgba(0, 255, 255, 0.15) 25%,     /* Cyan - BOOSTED */
-            rgba(255, 255, 0, 0.15) 50%,     /* Yellow - BOOSTED */
-            rgba(0, 255, 255, 0.15) 75%,     /* Cyan - BOOSTED */
-            rgba(255, 0, 255, 0.15) 100%     /* Magenta - BOOSTED */
+    background: radial-gradient(ellipse at 30% 30%, rgba(255, 0, 255, 0.25) 0%, transparent 50%),
+        /* Magenta - BOOSTED */
+        radial-gradient(ellipse at 70% 70%, rgba(0, 255, 255, 0.25) 0%, transparent 50%),
+        /* Cyan - BOOSTED */
+        radial-gradient(ellipse at 50% 50%, rgba(255, 255, 0, 0.2) 0%, transparent 60%),
+        /* Yellow - BOOSTED */
+        linear-gradient(135deg,
+            rgba(255, 0, 255, 0.15) 0%,
+            /* Magenta - BOOSTED */
+            rgba(0, 255, 255, 0.15) 25%,
+            /* Cyan - BOOSTED */
+            rgba(255, 255, 0, 0.15) 50%,
+            /* Yellow - BOOSTED */
+            rgba(0, 255, 255, 0.15) 75%,
+            /* Cyan - BOOSTED */
+            rgba(255, 0, 255, 0.15) 100%
+            /* Magenta - BOOSTED */
         ),
-        radial-gradient(ellipse at 30% 30%, rgba(255, 215, 0, 0.35) 0%, transparent 50%), /* 0.2 → 0.35 */
-        radial-gradient(ellipse at 70% 70%, rgba(255, 223, 0, 0.25) 0%, transparent 50%), /* 0.15 → 0.25 */
-        linear-gradient(135deg, 
-            rgba(255, 215, 0, 0.1) 0%,   /* 0.05 → 0.1 */
-            rgba(255, 223, 0, 0.2) 50%,  /* 0.1 → 0.2 */
-            rgba(255, 215, 0, 0.1) 100%  /* 0.05 → 0.1 */
+        radial-gradient(ellipse at 30% 30%, rgba(255, 215, 0, 0.35) 0%, transparent 50%),
+        /* 0.2 → 0.35 */
+        radial-gradient(ellipse at 70% 70%, rgba(255, 223, 0, 0.25) 0%, transparent 50%),
+        /* 0.15 → 0.25 */
+        linear-gradient(135deg,
+            rgba(255, 215, 0, 0.1) 0%,
+            /* 0.05 → 0.1 */
+            rgba(255, 223, 0, 0.2) 50%,
+            /* 0.1 → 0.2 */
+            rgba(255, 215, 0, 0.1) 100%
+            /* 0.05 → 0.1 */
         );
     pointer-events: none;
     z-index: 2;
@@ -2010,8 +2312,16 @@ h3 {
 }
 
 @keyframes shimmerPulse {
-    0%, 100% { opacity: 0.9; }  /* BOOSTED from 0.6 */
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0.9;
+    }
+
+    /* BOOSTED from 0.6 */
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Badge corner - Default (NO glow) */
@@ -2035,23 +2345,23 @@ h3 {
 .shop-card.holo-card .badge-corner {
     background: linear-gradient(135deg, #ff0080 0%, #ff8c00 100%);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    box-shadow: 
-        0 0 10px rgba(255, 0, 255, 0.5),
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5),
         0 0 20px rgba(0, 255, 255, 0.3),
         3px 3px 0px var(--black);
     animation: badgeGlow 2s ease-in-out infinite;
 }
 
 @keyframes badgeGlow {
-    0%, 100% { 
-        box-shadow: 
-            0 0 10px rgba(255, 0, 255, 0.5),
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.5),
             0 0 20px rgba(0, 255, 255, 0.3),
             3px 3px 0px var(--black);
     }
-    50% { 
-        box-shadow: 
-            0 0 15px rgba(255, 0, 255, 0.8),
+
+    50% {
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.8),
             0 0 30px rgba(0, 255, 255, 0.6),
             3px 3px 0px var(--black);
     }
@@ -2171,31 +2481,36 @@ h3 {
 
 @media (min-width: 768px) {
     .section-title {
-        font-size: clamp(4rem, 10vw, 8rem); /* Bigger on desktop */
+        font-size: clamp(4rem, 10vw, 8rem);
+        /* Bigger on desktop */
     }
 }
 
 @media (min-width: 640px) {
     .shop-grid {
-        grid-template-columns: repeat(2, 1fr); /* sm:grid-cols-2 */
+        grid-template-columns: repeat(2, 1fr);
+        /* sm:grid-cols-2 */
     }
 }
 
 @media (min-width: 1024px) {
     .shop-grid {
-        grid-template-columns: repeat(4, 1fr); /* lg:grid-cols-4 */
+        grid-template-columns: repeat(4, 1fr);
+        /* lg:grid-cols-4 */
     }
 }
 
 @media (min-width: 768px) {
     .gallery-grid {
-        column-count: 2; /* md:columns-2 */
+        column-count: 2;
+        /* md:columns-2 */
     }
 }
 
 @media (min-width: 1024px) {
     .gallery-grid {
-        column-count: 3; /* lg:columns-3 */
+        column-count: 3;
+        /* lg:columns-3 */
     }
 }
 
@@ -2210,12 +2525,12 @@ h3 {
         flex-direction: column;
         gap: 30px;
     }
-    
+
     .footer-brand {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .footer-links {
         flex-wrap: wrap;
         justify-content: center;
@@ -2226,11 +2541,11 @@ h3 {
     .footer-text h4 {
         font-size: 1.25rem;
     }
-    
+
     .footer-links a {
         font-size: 0.875rem;
     }
-    
+
     .footer-copyright {
         text-align: center;
     }
@@ -2335,6 +2650,7 @@ h3 {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    align-items: center;
 }
 
 .gallery-page-title {
