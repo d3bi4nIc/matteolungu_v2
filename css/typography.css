@@ -1,0 +1,60 @@
+/* ============================================
+   03 - TYPOGRAPHY
+   Fonts & text styling only
+============================================ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&display=swap');
+
+/* Display Font (Comic Titles) */
+.title-white,
+.title-green,
+h1,
+h2,
+h3 {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 0.02em;
+}
+
+/* Marker Font */
+.hero-subtitle,
+.contact-card,
+.cta-card,
+.section-subtitle,
+.polaroid-caption p,
+.package-description,
+.footer-text p {
+    font-family: 'Permanent Marker', cursive;
+}
+
+/* ============================================
+   TITLE COLORS
+============================================ */
+
+.title-white {
+    color: var(--white);
+}
+
+.title-green {
+    color: var(--green);
+}
+
+/* ============================================
+   GENERAL HEADING TWEAKS
+============================================ */
+
+h1,
+h2,
+h3 {
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.section-title {
+    font-style: italic;
+}
+
+.gallery-title,
+.event-packages-title {
+    font-style: italic;
+}
