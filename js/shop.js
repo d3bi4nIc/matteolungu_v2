@@ -1,51 +1,69 @@
 /* ============================================
-   CART SYSTEM - Shopping Cart Management
+   CART SYSTEM — REDESIGN COMPLET
+   2-step checkout: Coș → Detalii → Confirmare
 ============================================ */
 
-// Cart State
+// ─── STATE ───────────────────────────────────
 let cart = [];
 let cartCount = 0;
+let currentStep = 'items'; // 'items' | 'details' | 'confirm'
 
-// DOM Elements
-const cartOverlay = document.getElementById('cartOverlay');
-const cartDrawer = document.getElementById('cartDrawer');
-const cartClose = document.getElementById('cartClose');
-const cartButton = document.getElementById('cartButton');
+// ─── DOM ─────────────────────────────────────
+const cartOverlay      = document.getElementById('cartOverlay');
+const cartDrawer       = document.getElementById('cartDrawer');
+const cartClose        = document.getElementById('cartClose');
+const cartButton       = document.getElementById('cartButton');
 const cartCountElement = document.getElementById('cartCount');
-const cartEmpty = document.getElementById('cartEmpty');
-const cartItemsList = document.getElementById('cartItemsList');
-const cartTotalAmount = document.getElementById('cartTotalAmount');
-const btnWhatsApp = document.getElementById('btnWhatsApp');
-const btnEmail = document.getElementById('btnEmail');
 
-// Open Cart
+// ─── OPEN / CLOSE ─────────────────────────────
 function openCart() {
     cartOverlay.classList.add('active');
     cartDrawer.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 
-// Close Cart
 function closeCart() {
     cartOverlay.classList.remove('active');
     cartDrawer.classList.remove('active');
     document.body.style.overflow = 'auto';
 }
 
-// Event Listeners for Cart
-if (cartButton) {
-    cartButton.addEventListener('click', openCart);
+if (cartButton)  cartButton.addEventListener('click', openCart);
+if (cartClose)   cartClose.addEventListener('click', closeCart);
+if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+
+// ─── STEP NAVIGATION ─────────────────────────
+function goToStep(step) {
+    const steps = document.querySelectorAll('.cart-step');
+
+    // Exit current panel to left
+    const current = document.querySelector('.cart-panel.panel-active');
+    if (current) {
+        current.classList.remove('panel-active');
+        current.classList.add('panel-exit-left');
+        setTimeout(() => current.classList.remove('panel-exit-left'), 450);
+    }
+
+    // Enter new panel
+    setTimeout(() => {
+        const next = document.querySelector(`.cart-panel[data-panel="${step}"]`);
+        if (next) next.classList.add('panel-active');
+    }, 10);
+
+    // Update step indicators
+    const stepOrder = ['items', 'details', 'confirm'];
+    const targetIdx = stepOrder.indexOf(step);
+
+    steps.forEach((el, i) => {
+        el.classList.remove('active', 'done');
+        if (i === targetIdx) el.classList.add('active');
+        else if (i < targetIdx) el.classList.add('done');
+    });
+
+    currentStep = step;
 }
 
-if (cartClose) {
-    cartClose.addEventListener('click', closeCart);
-}
-
-if (cartOverlay) {
-    cartOverlay.addEventListener('click', closeCart);
-}
-
-// Add to Cart
+// ─── ADD TO CART ──────────────────────────────
 function addToCart(product) {
     const item = {
         id: `${product.id}-${Date.now()}`,
@@ -53,160 +71,291 @@ function addToCart(product) {
         price: product.basePrice,
         options: product.selectedOption
     };
-
     cart.push(item);
     cartCount = cart.length;
-    updateCart();
+    updateCartBadge();
+    renderStep1();
     openCart();
-
+    goToStep('items');
     console.log('✅ Produs adăugat:', item);
 }
 
-// Remove from Cart
+// ─── REMOVE FROM CART ─────────────────────────
 function removeFromCart(itemId) {
     cart = cart.filter(item => item.id !== itemId);
     cartCount = cart.length;
-    updateCart();
+    updateCartBadge();
+    renderStep1();
 }
 
-// Update Cart UI
-function updateCart() {
-    if (cartCountElement) {
-        if (cartCount > 0) {
-            cartCountElement.textContent = cartCount;
-            cartCountElement.style.display = 'flex';
-        } else {
-            cartCountElement.style.display = 'none';
-        }
-    }
-
-    if (cart.length === 0) {
-        cartEmpty.style.display = 'flex';
-        cartItemsList.innerHTML = '';
-        cartTotalAmount.textContent = '0 LEI';
-        btnWhatsApp.disabled = true;
-        btnEmail.disabled = true;
+// ─── CART BADGE ───────────────────────────────
+function updateCartBadge() {
+    if (!cartCountElement) return;
+    if (cartCount > 0) {
+        cartCountElement.textContent = cartCount;
+        cartCountElement.style.display = 'flex';
     } else {
-        cartEmpty.style.display = 'none';
-        renderCartItems();
-        updateTotal();
-        btnWhatsApp.disabled = false;
-        btnEmail.disabled = false;
+        cartCountElement.style.display = 'none';
     }
 }
 
-// Render Cart Items
-function renderCartItems() {
-    cartItemsList.innerHTML = cart.map(item => `
-        <div class="cart-item">
-            <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">×</button>
-            <h4>${item.name}</h4>
-            <p>${item.options}</p>
-            <div class="cart-item-price">${item.price} LEI</div>
+// ─── STEP 1 — ITEMS ───────────────────────────
+function renderStep1() {
+    const panel = document.querySelector('.cart-panel[data-panel="items"]');
+    if (!panel) return;
+    const total = cart.reduce((s, i) => s + i.price, 0);
+
+    panel.innerHTML = `
+        <div class="cart-items-list" id="cartItemsList">
+            ${cart.length === 0 ? `
+                <div class="cart-empty">
+                    <div class="cart-empty-icon">🛒</div>
+                    <p class="cart-empty-text">Coșul e gol...</p>
+                    <p class="cart-empty-subtext">Adaugă ceva fain!</p>
+                </div>
+            ` : cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-top">
+                        <h4>${item.name}</h4>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">×</button>
+                    </div>
+                    <p>${item.options}</p>
+                    <div class="cart-item-price">${item.price} LEI</div>
+                </div>
+            `).join('')}
         </div>
-    `).join('');
+
+        <div class="cart-items-footer">
+            <div class="cart-total-row">
+                <span class="cart-total-label">Total estimat</span>
+                <span class="cart-total-amount">${total}<span>LEI</span></span>
+            </div>
+            <button class="btn-proceed" id="btnProceed" ${cart.length === 0 ? 'disabled' : ''}>
+                CONTINUĂ COMANDA
+            </button>
+        </div>
+    `;
+
+    document.getElementById('btnProceed')?.addEventListener('click', () => {
+        renderStep2();
+        goToStep('details');
+    });
 }
 
-// Update Total
-function updateTotal() {
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    cartTotalAmount.textContent = `${total} LEI`;
+// ─── STEP 2 — DETALII ─────────────────────────
+function renderStep2() {
+    const panel = document.querySelector('.cart-panel[data-panel="details"]');
+    if (!panel) return;
+    const total = cart.reduce((s, i) => s + i.price, 0);
+
+    panel.innerHTML = `
+        <div class="details-header">
+            <h3>Detalii comandă</h3>
+            <p>Completează datele tale ca Matteo să te poată contacta</p>
+        </div>
+
+        <div class="order-summary-mini">
+            <h4>Sumar</h4>
+            ${cart.map(item => `
+                <div class="summary-item">
+                    <div>
+                        <div class="summary-item-name">${item.name}</div>
+                        <div class="summary-item-detail">${item.options}</div>
+                    </div>
+                    <span class="summary-item-price">${item.price} LEI</span>
+                </div>
+            `).join('')}
+            <div class="summary-total">
+                <span class="summary-total-label">TOTAL</span>
+                <span class="summary-total-price">${total} LEI</span>
+            </div>
+        </div>
+
+        <div class="client-fields">
+            <div class="input-row">
+                <div class="input-field">
+                    <label>Numele tău <span class="required">*</span></label>
+                    <input type="text" id="clientName" placeholder="Ex: Alex Popescu" autocomplete="name">
+                </div>
+                <div class="input-field">
+                    <label>Telefon <span class="required">*</span></label>
+                    <input type="tel" id="clientPhone" placeholder="07xx xxx xxx" autocomplete="tel">
+                </div>
+            </div>
+            <div class="note-field">
+                <label>Notă pentru artist <span class="optional">(opțional)</span></label>
+                <textarea id="orderNote" placeholder="Ex: vreau ceva urban, referințe la..."></textarea>
+            </div>
+        </div>
+
+        <span class="send-label">Trimite comanda via:</span>
+        <div class="send-buttons">
+            <button class="btn-whatsapp" id="btnWhatsApp">
+                <span class="btn-send-icon">💬</span>
+                WhatsApp
+                <span class="btn-send-sub">mesaj direct</span>
+            </button>
+            <button class="btn-email" id="btnEmail">
+                <span class="btn-send-icon">✉️</span>
+                Email
+                <span class="btn-send-sub">hello@matteolungu.art</span>
+            </button>
+        </div>
+
+        <button class="btn-back-step" id="btnBackStep">← înaopoi la coș</button>
+
+        <p class="cart-disclaimer">
+            Plata și detaliile finale vor fi stabilite direct cu artistul.<br>
+            Prețurile afișate sunt orientative.
+        </p>
+    `;
+
+    document.getElementById('btnBackStep')?.addEventListener('click', () => goToStep('items'));
+
+    document.getElementById('btnWhatsApp')?.addEventListener('click', () => {
+        const name  = document.getElementById('clientName')?.value.trim() || '';
+        const phone = document.getElementById('clientPhone')?.value.trim() || '';
+        const note  = document.getElementById('orderNote')?.value.trim() || '';
+        if (!validateFields(name, phone)) return;
+        sendOrder('whatsapp', { name, phone, note });
+    });
+
+    document.getElementById('btnEmail')?.addEventListener('click', () => {
+        const name  = document.getElementById('clientName')?.value.trim() || '';
+        const phone = document.getElementById('clientPhone')?.value.trim() || '';
+        const note  = document.getElementById('orderNote')?.value.trim() || '';
+        if (!validateFields(name, phone)) return;
+        sendOrder('email', { name, phone, note });
+    });
 }
 
-// Generate Order Text
-function generateOrderText() {
-    const list = cart.map((item, idx) =>
+// Validate required fields
+function validateFields(name, phone) {
+    const nameInput  = document.getElementById('clientName');
+    const phoneInput = document.getElementById('clientPhone');
+    let valid = true;
+    if (!name) { nameInput.classList.add('input-error'); valid = false; }
+    else { nameInput.classList.remove('input-error'); }
+    if (!phone) { phoneInput.classList.add('input-error'); valid = false; }
+    else { phoneInput.classList.remove('input-error'); }
+    return valid;
+}
+
+
+// Send order via WhatsApp or Email
+function sendOrder(method, clientData) {
+    const { name, phone, note } = clientData;
+
+    if (method === 'whatsapp') {
+        const text = generateWhatsAppText(name, phone, note);
+        const phoneNum = '40760118315';
+        window.open(`https://wa.me/${phoneNum}?text=${encodeURIComponent(text)}`, '_blank');
+    } else {
+        const subject = encodeURIComponent('Comanda Noua \u2014 Matteo Lungu Art');
+        const plainBody = generateEmailPlainText(name, phone, note);
+        window.location.href = `mailto:hello@matteolungu.art?subject=${subject}&body=${encodeURIComponent(plainBody)}`;
+    }
+
+    renderStep3(method, clientData);
+    goToStep('confirm');
+}
+
+// WhatsApp - styled receipt
+function generateWhatsAppText(name, phone, note) {
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+    const itemLines = cart.map((item, idx) =>
+        `  ${idx + 1}. *${item.name}*\n     \u2192 ${item.options} \u2014 *${item.price} LEI*`
+    ).join('\n');
+    const noteSection = note ? `\n\n\ud83d\udcdd *Nota:* ${note}` : '';
+
+    return `\ud83c\udfa8 *COMANDA NOUA \u2014 MATTEO LUNGU ART*\n` +
+        `\ud83d\udcc5 ${dateStr} la ${timeStr}\n` +
+        `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\n` +
+        `\ud83d\udc64 *CLIENT:* ${name}\n` +
+        `\ud83d\udcf1 *TELEFON:* ${phone}\n\n` +
+        `\ud83d\uded2 *PRODUSE COMANDATE:*\n${itemLines}` +
+        `${noteSection}\n\n` +
+        `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n` +
+        `\ud83d\udcb0 *TOTAL ESTIMAT: ${total} LEI*\n` +
+        `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\n` +
+        `Astept sa discutam detaliile! \ud83e\udd1d`;
+}
+
+// Email plain text (mailto body)
+function generateEmailPlainText(name, phone, note) {
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    const orderNum = 'ML-' + Date.now().toString().slice(-6);
+    const itemLines = cart.map((item, idx) =>
         `${idx + 1}. ${item.name} (${item.options}) - ${item.price} LEI`
     ).join('\n');
-
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-
-    return `Salut Matteo! Vreau să comand:\n\n${list}\n\nTOTAL: ${total} LEI\n\nMultumesc!`;
+    const noteSection = note ? `\n\nNota: ${note}` : '';
+    return `COMANDA NOUA #${orderNum}\nMATTEO LUNGU ART\n${'='.repeat(30)}\n\nCLIENT: ${name}\nTELEFON: ${phone}\n\nPRODUSE:\n${itemLines}${noteSection}\n\n${'='.repeat(30)}\nTOTAL ESTIMAT: ${total} LEI\n${'='.repeat(30)}\n\nMultumesc! Astept sa discutam.`;
 }
 
-// WhatsApp Order
-if (btnWhatsApp) {
-    btnWhatsApp.addEventListener('click', () => {
-        const text = encodeURIComponent(generateOrderText());
-        const phone = '40760118315';
-        window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+
+// ─── STEP 3 — CONFIRMARE ──────────────────────
+function renderStep3(method, clientData = {}) {
+    const panel = document.querySelector('.cart-panel[data-panel="confirm"]');
+    if (!panel) return;
+    const viaLabel = method === 'whatsapp' ? 'WhatsApp' : 'Email';
+    const viaIcon  = method === 'whatsapp' ? '💬' : '✉️';
+
+    panel.innerHTML = `
+        <div class="confirm-panel">
+            <div class="confirm-icon">🎨</div>
+            <h2 class="confirm-title">TRIMIS!</h2>
+            <p class="confirm-sub">
+                Comanda ta a fost trimisă.<br>Matteo te va contacta în curând.
+            </p>
+
+            <div class="confirm-via">
+                <span class="confirm-via-label">Via</span>
+                <span class="confirm-via-value">${viaIcon} ${viaLabel}</span>
+            </div>
+
+            <div class="confirm-steps-list">
+                <div class="confirm-step-item">
+                    <div class="confirm-step-num">1</div>
+                    <p class="confirm-step-text">Matteo verifică comanda și te contactează în max 24h</p>
+                </div>
+                <div class="confirm-step-item">
+                    <div class="confirm-step-num">2</div>
+                    <p class="confirm-step-text">Discutați detaliile, referințele și timeline-ul</p>
+                </div>
+                <div class="confirm-step-item">
+                    <div class="confirm-step-num">3</div>
+                    <p class="confirm-step-text">Plata și livrarea se stabilesc direct cu artistul</p>
+                </div>
+            </div>
+
+            <button class="btn-new-order" id="btnNewOrder">+ Comandă altceva</button>
+        </div>
+    `;
+
+    document.getElementById('btnNewOrder')?.addEventListener('click', () => {
+        cart = [];
+        cartCount = 0;
+        updateCartBadge();
+        renderStep1();
+        goToStep('items');
     });
 }
 
-// Email Order
-if (btnEmail) {
-    btnEmail.addEventListener('click', () => {
-        const subject = encodeURIComponent('Comandă Nouă Matteo Lungu Art');
-        const body = encodeURIComponent(generateOrderText());
-        window.location.href = `mailto:hello@matteolungu.art?subject=${subject}&body=${body}`;
-    });
+// ─── INIT ─────────────────────────────────────
+function initCart() {
+    renderStep1();
+    goToStep('items');
 }
 
-/* ============================================
-   MOBILE CART SYNC - Add to shop.js
-============================================ */
-
-// Sync mobile cart button with desktop
-function updateCart() {
-    if (cartCountElement) {
-        if (cartCount > 0) {
-            cartCountElement.textContent = cartCount;
-            cartCountElement.style.display = 'flex';
-        } else {
-            cartCountElement.style.display = 'none';
-        }
-    }
-
-    // SYNC MOBILE CART COUNT
-    const cartCountMobile = document.getElementById('cartCountMobile');
-    if (cartCountMobile) {
-        if (cartCount > 0) {
-            cartCountMobile.textContent = cartCount;
-            cartCountMobile.style.display = 'flex';
-        } else {
-            cartCountMobile.style.display = 'none';
-        }
-    }
-
-    if (cart.length === 0) {
-        cartEmpty.style.display = 'flex';
-        cartItemsList.innerHTML = '';
-        cartTotalAmount.textContent = '0 LEI';
-        btnWhatsApp.disabled = true;
-        btnEmail.disabled = true;
-    } else {
-        cartEmpty.style.display = 'none';
-        renderCartItems();
-        updateTotal();
-        btnWhatsApp.disabled = false;
-        btnEmail.disabled = false;
-    }
-}
-
-// Mobile cart button event listener
-document.addEventListener('DOMContentLoaded', () => {
-    const cartButtonMobile = document.getElementById('cartButtonMobile');
-
-    if (cartButtonMobile) {
-        cartButtonMobile.addEventListener('click', () => {
-            openCart();
-            // Close mobile menu when cart opens
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileToggle = document.getElementById('mobileToggle');
-            if (mobileMenu && mobileToggle) {
-                mobileToggle.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            }
-        });
-    }
-});
+document.addEventListener('DOMContentLoaded', initCart);
 
 /* ============================================
    LOAD PRODUCTS FROM HTML - Easy to Edit!
 ============================================ */
 
-// Load Custom Services from HTML
 function loadCustomServices() {
     const servicesContainer = document.getElementById('customServicesData');
     if (!servicesContainer) {
@@ -219,7 +368,6 @@ function loadCustomServices() {
 
     serviceElements.forEach(el => {
         const options = Array.from(el.querySelectorAll('.option')).map(opt => opt.textContent.trim());
-
         services.push({
             id: el.dataset.id,
             name: el.dataset.name,
@@ -235,7 +383,6 @@ function loadCustomServices() {
     return services;
 }
 
-// Load Ready Products from HTML
 function loadReadyProducts() {
     const productsContainer = document.getElementById('readyProductsData');
     if (!productsContainer) return [];
@@ -250,14 +397,13 @@ function loadReadyProducts() {
             price: parseInt(el.dataset.price),
             image: el.dataset.image,
             cat: el.dataset.category,
-            holo: el.dataset.holo === 'true' // ADD THIS
+            holo: el.dataset.holo === 'true'
         });
     });
 
     return products;
 }
 
-// Load products when page loads
 let customServices = [];
 let readyProducts = [];
 
@@ -270,18 +416,14 @@ document.addEventListener('DOMContentLoaded', () => {
    SHOP PAGE - Product Configurator with TABS
 ============================================ */
 
-// Current Tab State
 let currentShopTab = 'ready';
 
-// DOM Elements
 const shopPage = document.getElementById('shopPage');
 const btnBackToMain = document.getElementById('btnBackToMain');
 const shopProductsGrid = document.getElementById('shopProductsGrid');
 const mainSections = document.querySelectorAll('.hero, .shop-section, .gallery-section, .contact-section, .event-packages-section, .footer');
 
-// Open Shop Page with specific tab
 function openShopPage(tab = 'ready') {
-    console.log('🛒 Opening shop page on tab:', tab);
     shopPage.classList.add('active');
     mainSections.forEach(section => section.style.display = 'none');
 
@@ -289,32 +431,24 @@ function openShopPage(tab = 'ready') {
     if (header) header.style.display = 'none';
 
     window.scrollTo(0, 0);
-
-    // Switch to specified tab
     switchShopTab(tab);
 }
 
-// Close Shop Page
 function closeShopPage() {
-    console.log('🏠 Closing shop page...');
     shopPage.classList.remove('active');
     mainSections.forEach(section => section.style.display = '');
 
-    // SHOW HEADER AGAIN - ADD THIS
     const header = document.getElementById('header');
     if (header) header.style.display = '';
 
     window.scrollTo(0, 0);
 }
 
-// Event Listeners
 if (btnBackToMain) {
     btnBackToMain.addEventListener('click', closeShopPage);
 }
 
-// Make ALL shop buttons work
 document.addEventListener('DOMContentLoaded', () => {
-    // ORDER buttons in header
     const orderButtons = document.querySelectorAll('.btn-order');
     orderButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -323,40 +457,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Hero buttons - SPECIFIC TABS
-    const heroBtnShop = document.querySelector('.hero .btn-primary'); // SHOP NOW
-    const heroBtnCustom = document.querySelector('.hero .btn-secondary'); // CUSTOM ART
+    const heroBtnShop   = document.querySelector('.hero .btn-primary');
+    const heroBtnCustom = document.querySelector('.hero .btn-secondary');
 
     if (heroBtnShop) {
         heroBtnShop.addEventListener('click', (e) => {
             e.preventDefault();
-            openShopPage('ready'); // Open MAGAZIN tab
+            openShopPage('ready');
         });
     }
 
     if (heroBtnCustom) {
         heroBtnCustom.addEventListener('click', (e) => {
             e.preventDefault();
-            openShopPage('custom'); // Open CUSTOM tab
+            openShopPage('custom');
         });
     }
 
-    // Shop cards from main page
     setTimeout(() => {
         const shopCards = document.querySelectorAll('.shop-card, .btn-card');
         shopCards.forEach(card => {
-            // Skip murals card
             if (card.classList.contains('btn-murals') || card.closest('.shop-card[data-border="green"]')) {
-                return; // Don't add shop listener
+                return;
             }
-
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 openShopPage();
             });
         });
 
-        // Murals button goes to contact
         const muralButtons = document.querySelectorAll('.btn-murals');
         muralButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -367,25 +496,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 500);
 
-    // Tab buttons
-    const shopTabReady = document.getElementById('shopTabReady');
+    const shopTabReady  = document.getElementById('shopTabReady');
     const shopTabCustom = document.getElementById('shopTabCustom');
 
-    if (shopTabReady) {
-        shopTabReady.addEventListener('click', () => switchShopTab('ready'));
-    }
-
-    if (shopTabCustom) {
-        shopTabCustom.addEventListener('click', () => switchShopTab('custom'));
-    }
+    if (shopTabReady)  shopTabReady.addEventListener('click',  () => switchShopTab('ready'));
+    if (shopTabCustom) shopTabCustom.addEventListener('click', () => switchShopTab('custom'));
 });
 
-// Tab Switching
 function switchShopTab(tab) {
-    console.log('📑 Switching to tab:', tab);
     currentShopTab = tab;
 
-    const shopTabReady = document.getElementById('shopTabReady');
+    const shopTabReady  = document.getElementById('shopTabReady');
     const shopTabCustom = document.getElementById('shopTabCustom');
 
     if (shopTabReady && shopTabCustom) {
@@ -401,13 +522,8 @@ function switchShopTab(tab) {
     renderShopProducts();
 }
 
-// Render Shop Products based on current tab
 function renderShopProducts() {
-    if (!shopProductsGrid) {
-        console.error('❌ shopProductsGrid not found!');
-        return;
-    }
-
+    if (!shopProductsGrid) return;
     if (currentShopTab === 'custom') {
         renderCustomServices();
     } else {
@@ -415,56 +531,56 @@ function renderShopProducts() {
     }
 }
 
-// Render Custom Services
 function renderCustomServices() {
     if (customServices.length === 0) {
-        shopProductsGrid.innerHTML = '<p style="color: white; text-align: center; padding: 40px;">No custom services available. Add them in HTML!</p>';
+        shopProductsGrid.innerHTML = '<p style="color:white;text-align:center;padding:40px;">No custom services available.</p>';
         return;
     }
 
-    shopProductsGrid.innerHTML = customServices.map(service => {
-        return `
-            <div class="configurator-item" data-service-id="${service.id}">
-                <div class="configurator-image">
-                    <img src="${service.image}" alt="${service.name}">
-                    <div class="configurator-price-tag" style="background: ${service.color};">
-                        ${service.basePrice} LEI
+    shopProductsGrid.innerHTML = `
+        <div class="configurator-grid">
+            ${customServices.map(service => `
+                <div class="configurator-item" data-service-id="${service.id}">
+
+                    <div class="configurator-image">
+                        <img src="${service.image}" alt="${service.name}">
+                        <div class="configurator-price-tag" style="background: ${service.color};">
+                            ${service.basePrice} LEI
+                        </div>
                     </div>
-                </div>
-                
-                <div class="configurator-content">
-                    <div class="configurator-header">
-                        <div>
+
+                    <div class="configurator-content">
+                        <div class="configurator-header">
                             <h3>${service.name}</h3>
-                            <p class="configurator-description">${service.description}</p>
+                            <span class="custom-badge">CUSTOM</span>
                         </div>
-                        <span class="custom-badge">CUSTOM REQUEST</span>
-                    </div>
-                    
-                    <div class="configurator-options-wrapper">
-                        <p class="configurator-label">Alege Configurația:</p>
-                        <div class="configurator-options">
-                            ${service.options.map((opt, idx) => `
-                                <button class="config-option-btn ${idx === 0 ? 'active' : ''}" 
-                                        data-option="${opt}">
-                                    ${opt}
-                                </button>
-                            `).join('')}
+                        <p class="configurator-description">${service.description}</p>
+
+                        <div class="configurator-options-wrapper">
+                            <p class="configurator-label">Alege configuratia:</p>
+                            <div class="configurator-options">
+                                ${service.options.map((opt, idx) => `
+                                    <button class="config-option-btn ${idx === 0 ? 'active' : ''}"
+                                            data-option="${opt}">
+                                        ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
                         </div>
+
+                        <button class="btn-add-to-cart-config" data-service-id="${service.id}">
+                            + ADAUGA IN COS
+                        </button>
                     </div>
-                    
-                    <button class="btn-add-to-cart-config" data-service-id="${service.id}">
-                        ADAUGĂ ÎN COȘ!
-                    </button>
+
                 </div>
-            </div>
-        `;
-    }).join('');
+            `).join('')}
+        </div>
+    `;
 
     attachConfiguratorListeners();
 }
 
-// Render Ready Products
 function renderReadyProducts() {
     if (readyProducts.length === 0) {
         shopProductsGrid.innerHTML = '<p style="color: white; text-align: center; padding: 40px;">No products available.</p>';
@@ -492,31 +608,21 @@ function renderReadyProducts() {
     `;
 
     attachReadyProductListeners();
-    attachHoloEffect(); // CRITICAL - Must be here!
+    attachHoloEffect();
 }
 
-// Holographic effect for shop cards - WITH MOUSE TRACKING
-// Add this AFTER renderReadyProducts() function
 function attachHoloEffect() {
-    console.log('🌟 Attaching holo effect...');
-
     const holoCards = document.querySelectorAll('.ready-product-card.holo-card');
-    console.log('Found', holoCards.length, 'holo cards');
 
-    holoCards.forEach((card, index) => {
-        console.log('✅ Attached holo to card', index);
-
+    holoCards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
+            const rect    = card.getBoundingClientRect();
+            const x       = e.clientX - rect.left;
+            const y       = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-
             const rotateX = (y - centerY) / 10;
             const rotateY = (centerX - x) / 10;
-
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         });
 
@@ -526,22 +632,19 @@ function attachHoloEffect() {
     });
 }
 
-// Attach listeners for configurator items
 function attachConfiguratorListeners() {
     document.querySelectorAll('.config-option-btn').forEach(btn => {
         btn.addEventListener('click', function () {
-            this.parentElement.querySelectorAll('.config-option-btn').forEach(b =>
-                b.classList.remove('active')
-            );
+            this.parentElement.querySelectorAll('.config-option-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
         });
     });
 
     document.querySelectorAll('.btn-add-to-cart-config').forEach(btn => {
         btn.addEventListener('click', function () {
-            const serviceId = this.getAttribute('data-service-id');
-            const service = customServices.find(s => s.id === serviceId);
-            const card = this.closest('.configurator-item');
+            const serviceId     = this.getAttribute('data-service-id');
+            const service       = customServices.find(s => s.id === serviceId);
+            const card          = this.closest('.configurator-item');
             const selectedOption = card.querySelector('.config-option-btn.active').getAttribute('data-option');
 
             addToCart({
@@ -554,12 +657,11 @@ function attachConfiguratorListeners() {
     });
 }
 
-// Attach listeners for ready products
 function attachReadyProductListeners() {
     document.querySelectorAll('.btn-buy-ready').forEach(btn => {
         btn.addEventListener('click', function () {
             const productId = this.getAttribute('data-product-id');
-            const product = readyProducts.find(p => p.id === productId);
+            const product   = readyProducts.find(p => p.id === productId);
 
             addToCart({
                 id: product.id,
@@ -572,7 +674,7 @@ function attachReadyProductListeners() {
 }
 
 /* ============================================
-   SCROLLING REVIEWS - SECTION-BASED POSITIONING
+   SCROLLING REVIEWS
 ============================================ */
 
 const REVIEW_DATA = [
@@ -581,140 +683,47 @@ const REVIEW_DATA = [
     { text: "Detaliile din portret sunt incredibile. Exact ce cautam.", author: "DAN S." },
     { text: "Stil unic, urban, diferit de tot ce am vazut pana acum.", author: "ELENA P." },
     { text: "Serviciu rapid si comunicare excelenta. Recomand!", author: "COSMIN T." },
-    { text: "Am comandat un Multistarz rare card si arata fenomenal!", author: "IONUȚ R." }
-];
-
-// ZONE LEGATE DE SECȚIUNI - apar lângă elemente specifice!
-const SECTION_REVIEW_ZONES = [
-    {
-        selector: '.gallery-section',  // Secțiunea gallery
-        position: 'top-left',          // Unde în secțiune
-        offsetX: 40,                   // Offset de la margine
-        offsetY: 100,                  // Offset de sus
-        rotation: -5,
-        section: 'gallery'
-    },
-    {
-        selector: '.gallery-section',
-        position: 'top-right',
-        offsetX: -320,                 // Negativ = de la dreapta
-        offsetY: 100,
-        rotation: 5,
-        section: 'gallery'
-    },
-    {
-        selector: '.shop-section',
-        position: 'top-left',
-        offsetX: 40,
-        offsetY: 150,
-        rotation: -4,
-        section: 'shop'
-    },
-    {
-        selector: '.contact-section',
-        position: 'top-right',
-        offsetX: -320,
-        offsetY: 120,
-        rotation: 3,
-        section: 'contact'
-    },
-    {
-        selector: '.event-packages-section',
-        position: 'top-left',
-        offsetX: 40,
-        offsetY: 100,
-        rotation: -6,
-        section: 'events'
-    }
+    { text: "Am comandat un Multistarz rare card si arata fenomenal!", author: "IONUT R." }
 ];
 
 const scrollingReviews = document.getElementById('scrollingReviews');
 let lastScrollPos = 0;
-const triggerDistance = 1000;
+const TRIGGER_DISTANCE = 800;  // needs more scroll before next review
+const MAX_VISIBLE = 1;         // only 1 review visible at a time
 let reviewCount = 0;
-let usedZones = new Set();
-
-function getZonePosition(zone) {
-    // Găsește elementul din pagină
-    const element = document.querySelector(zone.selector);
-    if (!element) return null;
-
-    // Obține poziția elementului
-    const rect = element.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    let x, y;
-
-    // Calculează poziția bazată pe position
-    switch (zone.position) {
-        case 'top-left':
-            x = rect.left + zone.offsetX;
-            y = rect.top + scrollTop + zone.offsetY;
-            break;
-        case 'top-right':
-            x = rect.right + zone.offsetX; // offsetX e negativ
-            y = rect.top + scrollTop + zone.offsetY;
-            break;
-        case 'bottom-left':
-            x = rect.left + zone.offsetX;
-            y = rect.bottom + scrollTop + zone.offsetY;
-            break;
-        case 'bottom-right':
-            x = rect.right + zone.offsetX;
-            y = rect.bottom + scrollTop + zone.offsetY;
-            break;
-        default:
-            x = rect.left + zone.offsetX;
-            y = rect.top + scrollTop + zone.offsetY;
-    }
-
-    return { x, y, rotation: zone.rotation };
-}
+let reviewVisible = false;     // cooldown flag
 
 function createReview() {
-    // Skip if overlays are open
-    if (shopPage?.classList.contains('active')) return;
-    if (galleryPage?.classList.contains('active')) return;
+    // Hard limit — never stack
+    if (reviewVisible) return;
+    if (document.querySelectorAll('.review-card').length >= MAX_VISIBLE) return;
 
-    // Get available zones
-    const availableZones = SECTION_REVIEW_ZONES.filter((_, index) => !usedZones.has(index));
+    reviewVisible = true;
 
-    if (availableZones.length === 0) {
-        usedZones.clear();
-        return;
-    }
+    const data     = REVIEW_DATA[reviewCount % REVIEW_DATA.length];
+    const side     = reviewCount % 2 === 0 ? 'left' : 'right';
+    const colors   = ['#859F3D', '#FFD700', '#ffffff'];
+    const bgColor  = colors[reviewCount % 3];
 
-    // Pick random zone
-    const zone = availableZones[Math.floor(Math.random() * availableZones.length)];
-    const zoneIndex = SECTION_REVIEW_ZONES.indexOf(zone);
+    // Position: always visible in current viewport (not absolute page position)
+    const vpHeight = window.innerHeight;
+    const topPx    = Math.floor(vpHeight * 0.25 + Math.random() * vpHeight * 0.4);
 
-    // Get actual position from element
-    const position = getZonePosition(zone);
-    if (!position) return; // Element not found
-
-    usedZones.add(zoneIndex);
-
-    const data = REVIEW_DATA[reviewCount % REVIEW_DATA.length];
-
-    const colors = ['#859F3D', '#FFD700', '#ffffff'];
-    const bgColor = colors[reviewCount % 3];
+    const rotation = (Math.random() * 10) - 5; // subtler rotation
 
     const review = document.createElement('div');
     review.className = 'review-card';
-
-    // Position ABSOLUTE relative to page
     review.style.cssText = `
-        position: absolute;
-        left: ${position.x}px;
-        top: ${position.y}px;
-        transform: rotate(${position.rotation}deg);
+        position: fixed;
+        top: ${topPx}px;
+        ${side}: 20px;
+        transform: rotate(${rotation}deg);
         background: ${bgColor};
         color: #000;
-        width: 280px;
     `;
 
     review.innerHTML = `
-        <div class="review-bubble-tail" style="background: ${bgColor};"></div>
+        <div class="review-bubble-tail" style="${side === 'left' ? 'left: 16px;' : 'right: 16px;'} background: ${bgColor};"></div>
         <p class="review-text">"${data.text}"</p>
         <div class="review-author-wrapper">
             <span class="review-divider"></span>
@@ -726,54 +735,26 @@ function createReview() {
     scrollingReviews.appendChild(review);
     reviewCount++;
 
+    // Remove after 3.5s, then allow next one
     setTimeout(() => {
         review.classList.add('fade-out');
         setTimeout(() => {
             review.remove();
-            usedZones.delete(zoneIndex);
-        }, 1000);
-    }, 6000);
+            reviewVisible = false;
+        }, 800);
+    }, 3500);
 }
 
-// Trigger when entering sections
-const observeReviewTriggers = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            createReview();
-        }
-    });
-}, {
-    threshold: 0.3
-});
-
-// Observe sections
-document.addEventListener('DOMContentLoaded', () => {
-    const sections = document.querySelectorAll('.shop-section, .gallery-section, .contact-section, .event-packages-section');
-    sections.forEach(section => {
-        observeReviewTriggers.observe(section);
-    });
-});
-
-// Also trigger on scroll
 window.addEventListener('scroll', () => {
-    if (shopPage?.classList.contains('active')) return;
-    if (galleryPage?.classList.contains('active')) return;
+    if (shopPage && shopPage.classList.contains('active')) return;
 
     const currentScroll = window.scrollY;
     const diff = Math.abs(currentScroll - lastScrollPos);
 
-    if (diff > triggerDistance) {
+    if (diff > TRIGGER_DISTANCE) {
         lastScrollPos = currentScroll;
         createReview();
     }
 });
-
-console.log('🎨 Reviews with section-based zones loaded!');
-
-/* ============================================
-   INITIALIZATION
-============================================ */
-
-updateCart();
 
 console.log('🎨 Shop system loaded successfully!');

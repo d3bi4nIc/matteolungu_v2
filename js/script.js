@@ -214,23 +214,29 @@ const navLinks = document.querySelectorAll('.nav-link');
 
 function updateActiveLink() {
     let currentSection = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        const scrollPosition = window.pageYOffset + 100; // Offset for header
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            currentSection = section.getAttribute('id');
+    const scrollPos  = window.pageYOffset + 160;
+    const atBottom   = (window.pageYOffset + window.innerHeight) >= (document.documentElement.scrollHeight - 60);
+
+    if (atBottom) {
+        // At page bottom — find last section that has a matching nav link
+        const navIds = Array.from(navLinks).map(l => l.getAttribute('data-section'));
+        const all    = Array.from(sections).map(s => s.getAttribute('id'));
+        for (let i = all.length - 1; i >= 0; i--) {
+            if (navIds.includes(all[i])) { currentSection = all[i]; break; }
         }
-    });
-    
-    // Update active class
+    } else {
+        sections.forEach(section => {
+            const top = section.offsetTop;
+            const h   = section.clientHeight;
+            if (scrollPos >= top && scrollPos < top + h) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+    }
+
     navLinks.forEach(link => {
         link.classList.remove('active');
-        
-        const linkSection = link.getAttribute('data-section');
-        if (linkSection === currentSection) {
+        if (link.getAttribute('data-section') === currentSection) {
             link.classList.add('active');
         }
     });
@@ -296,8 +302,8 @@ window.addEventListener('load', () => {
 // CONSOLE EASTER EGG
 // ============================================
 
-console.log('%c🎨 MATTEO LUNGU', 'font-size: 24px; font-weight: bold; color: #859F3D;');
-console.log('%cART WITH ATTITUDE 🚀', 'font-size: 16px; color: #FFD700;');
+console.log('%cðŸŽ¨ MATTEO LUNGU', 'font-size: 24px; font-weight: bold; color: #859F3D;');
+console.log('%cART WITH ATTITUDE ðŸš€', 'font-size: 16px; color: #FFD700;');
 console.log('%cLooking for something? Hit me up: hello@matteo.art', 'font-size: 12px; color: #fff;');
 
 // ============================================
@@ -448,4 +454,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // END OF SCRIPT
 // ============================================
 
-console.log('%c✅ Site loaded successfully!', 'color: #859F3D; font-weight: bold;');
+console.log('%câœ… Site loaded successfully!', 'color: #859F3D; font-weight: bold;');

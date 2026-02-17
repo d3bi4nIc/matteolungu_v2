@@ -382,7 +382,7 @@
                 <div class="event-package-card package-yellow">
                     <div class="package-duration">FULL EVENT</div>
                     <h3 class="package-name">VIP EXPERIENCE</h3>
-                    <p class="package-description">Fără limită de timp, până pleacă și ultimul invitat.</p>
+                    <p class="package-description">Fara limita de timp, pana pleaca si ultimul invitat.</p>
 
                     <ul class="package-features">
                         <li><span>➔</span> Caricaturi nelimitate</li>
@@ -446,7 +446,7 @@
                             <p>MESAJ DIRECT</p>
                         </div>
                     </div>
-                    <div class="contact-arrow">→</div>
+                    <div class="contact-arrow">HIT ME!</div>
                 </a>
 
                 <!-- Instagram -->
@@ -464,7 +464,7 @@
                             <p>@MATTEOLUNGU</p>
                         </div>
                     </div>
-                    <div class="contact-arrow">→</div>
+                    <div class="contact-arrow">FOLLOW!</div>
                 </a>
 
                 <!-- TikTok -->
@@ -482,7 +482,7 @@
                             <p>@MATTEO_LUNGU</p>
                         </div>
                     </div>
-                    <div class="contact-arrow">→</div>
+                    <div class="contact-arrow">WATCH!</div>
                 </a>
 
                 <!-- Email -->
@@ -499,7 +499,7 @@
                             <p>HELLO@MATTEOLUNGU.ART</p>
                         </div>
                     </div>
-                    <div class="contact-arrow">→</div>
+                    <div class="contact-arrow">WRITE!</div>
                 </a>
             </div>
         </div>
@@ -534,51 +534,59 @@
     </footer>
 
     <!-- ============================================ -->
-    <!-- CART DRAWER (Coșul de cumpărături) -->
+    <!-- CART DRAWER — REDESIGN                      -->
     <!-- ============================================ -->
 
-    <!-- Overlay negru când cart-ul e deschis -->
+    <!-- Overlay -->
     <div class="cart-overlay" id="cartOverlay"></div>
 
-    <!-- Cart Drawer (slide-in din dreapta) -->
+    <!-- Cart Drawer -->
     <div class="cart-drawer" id="cartDrawer">
+
+        <!-- Header cu step indicator -->
         <div class="cart-header">
-            <h2>COȘUL TĂU</h2>
-            <button class="cart-close" id="cartClose">×</button>
+            <div class="cart-header-top">
+                <h2>COȘUL <span>TĂU</span></h2>
+                <button class="cart-close" id="cartClose">×</button>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="cart-steps">
+                <div class="cart-step active" data-step="items">
+                    <div class="cart-step-num">1</div>
+                    <span class="cart-step-label">Coș</span>
+                </div>
+                <div class="cart-step-divider"></div>
+                <div class="cart-step" data-step="details">
+                    <div class="cart-step-num">2</div>
+                    <span class="cart-step-label">Detalii</span>
+                </div>
+                <div class="cart-step-divider"></div>
+                <div class="cart-step" data-step="confirm">
+                    <div class="cart-step-num">3</div>
+                    <span class="cart-step-label">Trimis!</span>
+                </div>
+            </div>
         </div>
 
-        <div class="cart-items" id="cartItems">
-            <!-- Empty state (afișat când coșul e gol) -->
-            <div class="cart-empty" id="cartEmpty">
-                <svg fill="currentColor" viewBox="0 0 24 24" style="width: 128px; height: 128px; opacity: 0.1;">
-                    <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                <p class="cart-empty-text">COSUL E GOL...</p>
-                <p class="cart-empty-subtext">Mergi la magazin și adaugă artă!</p>
+        <!-- Panels container -->
+        <div class="cart-panels">
+
+            <!-- PANEL 1: Items -->
+            <div class="cart-panel panel-active" data-panel="items">
+                <!-- Populated by JS: renderStep1() -->
             </div>
 
-            <!-- Container pentru produse (populat de JS) -->
-            <div class="cart-items-list" id="cartItemsList"></div>
-        </div>
-
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>TOTAL ESTIMAT:</span>
-                <span id="cartTotalAmount">0 LEI</span>
+            <!-- PANEL 2: Details + Send -->
+            <div class="cart-panel" data-panel="details">
+                <!-- Populated by JS: renderStep2() -->
             </div>
 
-            <div class="cart-actions">
-                <button class="btn-whatsapp" id="btnWhatsApp" disabled>
-                    TRIMITE PE WHATSAPP
-                </button>
-                <button class="btn-email" id="btnEmail" disabled>
-                    TRIMITE PE EMAIL
-                </button>
+            <!-- PANEL 3: Confirmation -->
+            <div class="cart-panel" data-panel="confirm">
+                <!-- Populated by JS: renderStep3() -->
             </div>
 
-            <p class="cart-disclaimer">
-                Plata si detaliile finale vor fi stabilite direct cu artistul.
-            </p>
         </div>
     </div>
 
@@ -592,7 +600,7 @@
             <div class="shop-header-content">
                 <div class="shop-title-section">
                     <h1 class="shop-page-title">SHOP</h1>
-                    <p class="shop-page-subtitle">Alege intre arta gata facuta sau ceva special creat pentru tine.</p>
+                    <p class="shop-page-subtitle">Alege intre arta originala sau ceva special creat pentru tine.</p>
                 </div>
 
                 <!-- Tab Toggle -->
@@ -650,8 +658,7 @@
 
     </div>
 
-    <!-- READY PRODUCTS (Produse gata făcute) -->
-    <!-- READY PRODUCTS (Produse gata făcute) -->
+    <!-- ORIGINALS -->
     <div id="readyProductsData" style="display: none;">
 
         <!-- Product 1 -->

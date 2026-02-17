@@ -807,7 +807,8 @@ body.menu-open {
 
 @media (max-width: 768px) {
     .hero-buttons-new {
-        flex-direction: row;  /* Side by side, nu column! */
+        flex-direction: row;
+        /* Side by side, nu column! */
         justify-content: center;
         align-items: stretch;
         gap: 12px;
@@ -817,12 +818,16 @@ body.menu-open {
 
     .hero-buttons-new .btn-primary,
     .hero-buttons-new .btn-secondary {
-        flex: 1;  /* Împart spațiul egal */
-        max-width: 160px;  /* Mai înguste */
-        padding: 16px 20px;  /* Padding mai mic */
-        font-size: 1.125rem;  /* Font mai mic */
+        flex: 1;
+        /* Împart spațiul egal */
+        max-width: 160px;
+        /* Mai înguste */
+        padding: 16px 20px;
+        /* Padding mai mic */
+        font-size: 1.125rem;
+        /* Font mai mic */
         border: 3px solid var(--black);
-        box-shadow: 
+        box-shadow:
             5px 5px 0px 0px #859F3D,
             3px 3px 0px 3px var(--black);
         text-align: center;
@@ -830,7 +835,7 @@ body.menu-open {
 
     .hero-buttons-new .btn-primary:active {
         transform: translate(2px, 2px);
-        box-shadow: 
+        box-shadow:
             3px 3px 0px 0px #859F3D,
             2px 2px 0px 2px var(--black);
     }
@@ -841,13 +846,14 @@ body.menu-open {
 
     .hero-buttons-new .btn-secondary:active {
         transform: translate(2px, 2px);
-        box-shadow: 
+        box-shadow:
             3px 3px 0px 0px #859F3D,
             2px 2px 0px 2px var(--black);
     }
 }
 
 @media (max-width: 380px) {
+
     /* Pe ecrane FOARTE mici, stack vertical */
     .hero-buttons-new {
         flex-direction: column;
@@ -1742,163 +1748,165 @@ body.menu-open {
 .contact-cards {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 16px;
     padding-top: 0;
 }
 
 .contact-card {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 24px;
-    background: var(--white);
-    color: var(--black);
-    border: 3px solid var(--black);
-    box-shadow: 3px 3px 0px var(--black);
+    gap: 20px;
+    padding: 18px 22px;
+    background: #111;
+    color: var(--white);
+    border: 3px solid #222;
     text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.2s ease,
+                box-shadow 0.25s ease;
 }
 
-.contact-card:nth-child(odd) {
-    transform: rotate(1deg);
+.contact-card:nth-child(1) { transform: rotate(-1.5deg); box-shadow: 4px 4px 0 #222; }
+.contact-card:nth-child(2) { transform: rotate(1deg);    box-shadow: 4px 4px 0 #222; }
+.contact-card:nth-child(3) { transform: rotate(-0.8deg); box-shadow: 4px 4px 0 #222; }
+.contact-card:nth-child(4) { transform: rotate(1.2deg);  box-shadow: 4px 4px 0 #222; }
+
+.contact-card:nth-child(1):hover { transform: translate(-2px,-4px) rotate(0deg); border-color: #25D366; box-shadow: 6px 6px 0 #25D366; }
+.contact-card:nth-child(2):hover { transform: translate(-2px,-4px) rotate(0deg); border-color: #E1306C; box-shadow: 6px 6px 0 #E1306C; }
+.contact-card:nth-child(3):hover { transform: translate(-2px,-4px) rotate(0deg); border-color: #ff0050; box-shadow: 6px 6px 0 #ff0050; }
+.contact-card:nth-child(4):hover { transform: translate(-2px,-4px) rotate(0deg); border-color: #3b82f6; box-shadow: 6px 6px 0 #3b82f6; }
+
+/* Bara verticala de culoare stanga */
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    pointer-events: none;
+    transition: width 0.2s ease;
 }
 
-.contact-card:nth-child(even) {
-    transform: rotate(-1deg);
-}
+.contact-card:nth-child(1)::before { background: #25D366; }
+.contact-card:nth-child(2)::before { background: linear-gradient(180deg, #f09433, #dc2743, #bc1888); }
+.contact-card:nth-child(3)::before { background: #ff0050; }
+.contact-card:nth-child(4)::before { background: #3b82f6; }
 
-.contact-card:hover {
-    transform: rotate(0deg);
-}
+.contact-card:hover::before { width: 6px; }
 
+/* Wrapper */
 .contact-card-content {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
+    flex: 1;
 }
 
+/* Icon */
 .contact-icon {
-    padding: 12px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
+    border: 2.5px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     color: var(--white);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    box-shadow: none;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.2s ease,
+                background 0.2s ease;
 }
 
 .contact-card:hover .contact-icon {
-    transform: scale(1.1);
+    transform: rotate(-12deg) scale(1.12);
 }
 
-.contact-icon.instagram {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-}
+.contact-icon svg { width: 24px; height: 24px; display: block; }
 
-.contact-icon.tiktok {
-    background: var(--black);
-}
+.contact-icon.whatsapp  { background: rgba(37, 211, 102, 0.15); }
+.contact-icon.instagram { background: rgba(220, 39, 67, 0.15); }
+.contact-icon.tiktok    { background: rgba(255, 0, 80, 0.12); }
+.contact-icon.email     { background: rgba(59, 130, 246, 0.15); }
 
-.contact-icon.whatsapp {
-    background: #25D366;
-}
+.contact-card:nth-child(1):hover .contact-icon { background: #25D366; border-color: #25D366; }
+.contact-card:nth-child(2):hover .contact-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border-color: #E1306C; }
+.contact-card:nth-child(3):hover .contact-icon { background: #ff0050; border-color: #ff0050; }
+.contact-card:nth-child(4):hover .contact-icon { background: #3b82f6; border-color: #3b82f6; }
 
-.contact-icon.email {
-    background: #3b82f6;
-}
-
-.contact-icon svg {
-    width: 32px;
-    height: 32px;
-    display: block;
-}
-
+/* Text */
 .contact-info h3 {
     font-family: 'Permanent Marker', cursive;
-    font-size: 0.75rem;
-    color: #6b7280;
+    font-size: 0.55rem;
+    color: #444;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 4px;
+    letter-spacing: 0.2em;
+    margin-bottom: 3px;
+    transition: color 0.2s ease;
 }
 
 .contact-info p {
-    font-size: 1.875rem;
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -0.025em;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--white);
+    transition: color 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+.contact-card:nth-child(1):hover h3 { color: rgba(37, 211, 102, 0.6); }
+.contact-card:nth-child(2):hover h3 { color: rgba(225, 48, 108, 0.6); }
+.contact-card:nth-child(3):hover h3 { color: rgba(255, 0, 80, 0.6); }
+.contact-card:nth-child(4):hover h3 { color: rgba(59, 130, 246, 0.6); }
+
+.contact-card:nth-child(1):hover p { color: #25D366; }
+.contact-card:nth-child(2):hover p { color: #E1306C; }
+.contact-card:nth-child(3):hover p { color: #ff0050; }
+.contact-card:nth-child(4):hover p { color: #3b82f6; }
+
+/* Arrow label */
 .contact-arrow {
-    font-size: 2.5rem;
-    transition: transform 0.3s ease;
+    font-family: 'Bangers', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #333;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
 }
 
-.contact-card:hover .contact-arrow {
-    transform: scale(1.25);
-}
+.contact-card:nth-child(1):hover .contact-arrow { color: #25D366; }
+.contact-card:nth-child(2):hover .contact-arrow { color: #E1306C; }
+.contact-card:nth-child(3):hover .contact-arrow { color: #ff0050; }
+.contact-card:nth-child(4):hover .contact-arrow { color: #3b82f6; }
 
-/* ============================================
-   CONTACT CARDS - ULTRA COMPACT MOBILE
-============================================ */
-
+/* Mobile */
 @media (max-width: 768px) {
-    .contact-cards {
-        gap: 12px;  /* Mai mic gap între carduri */
-        padding-top: 0;
-    }
-
     .contact-card {
-        padding: 12px 16px;  /* Foarte compacte */
-        max-width: 100%;
-        box-shadow: 2px 2px 0px var(--black);
-        transform: rotate(0deg) !important;  /* Fără tilt */
+        padding: 12px 16px;
+        transform: rotate(0deg) !important;
+        box-shadow: 3px 3px 0 #222 !important;
     }
-
-    .contact-card:hover {
-        transform: scale(1.01) !important;  /* Minimal hover */
-    }
-
-    .contact-card-content {
-        gap: 12px;  /* Mai mic gap */
-    }
-
-    .contact-icon {
-        padding: 8px;  /* Icon și mai mic */
-        flex-shrink: 0;
-    }
-
-    .contact-icon svg {
-        width: 20px;  /* Icon mai mic */
-        height: 20px;
-    }
-
-    .contact-info h3 {
-        font-size: 0.5rem;  /* Label foarte mic */
-        margin-bottom: 2px;
-        text-transform: uppercase;
-    }
-
-    .contact-info p {
-        font-size: 1.125rem;  /* Text mai mic */
-        letter-spacing: -0.01em;
-        font-weight: 700;
-    }
-
-    /* ASCUNDE SĂGEATA */
-    .contact-arrow {
-        display: none !important;
-    }
+    .contact-card:hover { transform: scale(1.01) !important; }
+    .contact-icon { width: 40px; height: 40px; }
+    .contact-icon svg { width: 18px; height: 18px; }
+    .contact-info h3 { font-size: 0.5rem; }
+    .contact-info p  { font-size: 1.1rem; }
+    .contact-arrow   { display: none !important; }
 }
 
 @media (max-width: 480px) {
-    .contact-card {
-        padding: 10px 14px;  /* Și mai compacte */
-    }
-
-    .contact-info p {
-        font-size: 1rem;  /* Și mai mic textul */
-    }
+    .contact-card { padding: 10px 14px; }
+    .contact-info p { font-size: 1rem; }
 }
+
 
 /* ============================================
    EVENT PACKAGES SECTION
@@ -1911,7 +1919,7 @@ body.menu-open {
 }
 
 .event-packages-container {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -1932,140 +1940,208 @@ body.menu-open {
 
 .event-packages-subtitle {
     font-family: 'Permanent Marker', cursive;
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.4);
     margin-top: 16px;
 }
 
+/* ── GRID — centrul mai mare ── */
 .event-packages-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 32px;
-    margin-bottom: 48px;
+    grid-template-columns: 1fr 1.12fr 1fr;
+    gap: 0;
+    align-items: end;
+    position: relative;
 }
 
+/* ── BASE CARD ── */
 .event-package-card {
     position: relative;
-    padding: 32px;
+    padding: 36px 32px 32px;
     border: 3px solid var(--black);
-    box-shadow: 6px 6px 0px var(--black);
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.25s ease;
+    /* overflow: hidden INTENTIONAL ABSENT — badge nu se taie */
 }
 
-.event-package-card:hover {
-    transform: scale(1.05) rotate(-1deg);
-    box-shadow: 10px 10px 0px var(--black);
-}
-
+/* ── CARD 1 — alb, inclinat stanga ── */
 .package-white {
     background: var(--white);
     color: var(--black);
+    transform: rotate(-1.5deg) translateX(8px);
+    box-shadow: -4px 8px 0 #000;
+    z-index: 1;
 }
 
+.package-white:hover {
+    transform: rotate(0deg) translateX(0) translateY(-8px);
+    box-shadow: -4px 16px 0 #000;
+    z-index: 5;
+}
+
+/* ── CARD 2 — verde, centru, mai mare ── */
 .package-green {
     background: #859F3D;
     color: var(--black);
+    transform: translateY(-24px);
+    box-shadow: 0 12px 0 #000, 0 0 0 3px #000;
+    z-index: 3;
+    padding-top: 52px;
+    padding-bottom: 40px;
 }
 
+.package-green:hover {
+    transform: translateY(-36px);
+    box-shadow: 0 20px 0 #000;
+}
+
+/* ── CARD 3 — galben, inclinat dreapta ── */
 .package-yellow {
     background: #FFD700;
     color: var(--black);
+    transform: rotate(1.5deg) translateX(-8px);
+    box-shadow: 4px 8px 0 #000;
+    z-index: 1;
 }
 
+.package-yellow:hover {
+    transform: rotate(0deg) translateX(0) translateY(-8px);
+    box-shadow: 4px 16px 0 #000;
+    z-index: 5;
+}
+
+/* ── POPULAR BADGE — complet inauntrul cardului ── */
 .package-badge {
     position: absolute;
-    top: -16px;
-    right: -16px;
+    top: 16px;
+    right: 16px;
     background: #ef4444;
     color: var(--white);
-    padding: 8px 16px;
+    padding: 6px 14px;
     font-family: 'Bangers', cursive;
-    font-size: 1.25rem;
-    transform: rotate(12deg);
+    font-size: 1.1rem;
+    transform: rotate(6deg);
     border: 3px solid var(--black);
-    box-shadow: 4px 4px 0px var(--black);
+    box-shadow: 3px 3px 0px var(--black);
     z-index: 10;
 }
 
 .package-duration {
     font-family: 'Bangers', cursive;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.6;
-    margin-bottom: 4px;
+    letter-spacing: 0.2em;
+    opacity: 0.5;
+    margin-bottom: 6px;
 }
 
 .package-name {
-    font-size: 2.25rem;
+    font-family: 'Bangers', cursive;
+    font-size: 2.4rem;
     font-weight: 900;
     text-transform: uppercase;
     line-height: 1;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+}
+
+.package-green .package-name {
+    font-size: 2.8rem;
 }
 
 .package-description {
     font-family: 'Permanent Marker', cursive;
-    font-size: 0.875rem;
-    line-height: 1.4;
-    margin-bottom: 24px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    opacity: 0.7;
 }
 
 .package-features {
     list-style: none;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .package-features li {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-family: 'Bangers', cursive;
-    font-size: 1.125rem;
-    margin-bottom: 12px;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
 }
 
-.package-features span {
-    font-size: 1.5rem;
+.package-features li span {
+    display: none; /* ascunde span-ul cu sageata din HTML */
+}
+
+.package-features li::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.4);
+    flex-shrink: 0;
 }
 
 .package-footer {
-    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid rgba(0, 0, 0, 0.15);
     padding-top: 24px;
     margin-top: auto;
 }
 
 .package-price {
-    font-size: 2.5rem;
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
     font-weight: 900;
+    line-height: 1;
     margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+.package-green .package-price {
+    font-size: 3.5rem;
 }
 
 .package-cta {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: var(--black);
     color: var(--white);
     font-family: 'Bangers', cursive;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     border: 2px solid var(--black);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.package-cta:hover {
-    background: var(--white);
-    color: var(--black);
+.package-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
 }
+
+.package-cta:hover::after { transform: translateX(0); }
+.package-white .package-cta:hover  { background: #111; }
+.package-green .package-cta:hover  { background: #6b8226; }
+.package-yellow .package-cta:hover { background: #111; }
 
 .event-packages-disclaimer {
     text-align: center;
-    margin-top: 48px;
+    margin-top: 56px;
 }
 
 .event-packages-disclaimer p {
@@ -2074,6 +2150,29 @@ body.menu-open {
     text-transform: uppercase;
     font-style: italic;
     color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+    .event-packages-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    .package-white,
+    .package-green,
+    .package-yellow {
+        transform: none !important;
+        box-shadow: 4px 4px 0 #000 !important;
+    }
+
+    .package-green { padding-top: 36px; }
+
+    .package-name { font-size: 2rem; }
+    .package-green .package-name { font-size: 2.2rem; }
+    .package-price { font-size: 2.5rem; }
+    .package-green .package-price { font-size: 2.8rem; }
 }
 
 /* ============================================
@@ -2793,7 +2892,9 @@ body.menu-open {
 }
 
 /* ============================================
-   LIGHTBOX - FULLSCREEN VIEW
+   LIGHTBOX - SMART IMAGE FIT
+   Înlocuiește secțiunea "LIGHTBOX - FULLSCREEN VIEW"
+   din style.css (~linia unde e .lightbox {...})
 ============================================ */
 
 .lightbox {
@@ -2812,166 +2913,219 @@ body.menu-open {
 .lightbox-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.97);
+    backdrop-filter: blur(8px);
 }
 
+/* ── INNER LAYOUT ── */
 .lightbox-content {
     position: relative;
-    width: 90%;
-    max-width: 1400px;
-    height: 90vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 24px 72px 16px;   /* top, sides (space for arrows), bottom */
     z-index: 10;
+    gap: 12px;
 }
 
-/* Close Button */
+/* ── CLOSE ── */
 .lightbox-close {
-    position: absolute;
-    top: -60px;
-    right: 0;
-    width: 56px;
-    height: 56px;
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
     background: #ef4444;
-    border: 4px solid var(--black);
-    color: var(--white);
+    border: 3px solid #000;
+    color: #fff;
     font-family: 'Bangers', cursive;
-    font-size: 2rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    box-shadow: 4px 4px 0px var(--black);
-    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 0 #000;
+    z-index: 300;
+    transition: transform 0.2s ease;
 }
+.lightbox-close:hover { transform: rotate(90deg); }
 
-.lightbox-close:hover {
-    transform: rotate(90deg) scale(1.1);
-}
-
-/* Navigation Arrows */
+/* ── NAV ARROWS ── */
 .lightbox-nav {
-    position: absolute;
+    position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    width: 64px;
-    height: 64px;
-    background: var(--white);
-    border: 4px solid var(--black);
-    color: var(--black);
+    width: 48px;
+    height: 72px;
+    background: #fff;
+    border: 3px solid #000;
+    color: #000;
     font-family: 'Bangers', cursive;
-    font-size: 3rem;
+    font-size: 2.2rem;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 4px 4px 0px #859F3D;
-    transition: all 0.3s ease;
-    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 0 0 #000;
+    z-index: 300;
+    transition: background 0.15s ease, transform 0.15s ease;
 }
+.lightbox-prev { left: 0; border-left: none; box-shadow: 4px 0 0 #000; }
+.lightbox-next { right: 0; border-right: none; box-shadow: -4px 0 0 #000; }
+.lightbox-prev:hover { background: #859F3D; transform: translateY(-50%) translateX(-2px); }
+.lightbox-next:hover { background: #859F3D; transform: translateY(-50%) translateX(2px); }
 
-.lightbox-prev {
-    left: -80px;
-}
-
-.lightbox-next {
-    right: -80px;
-}
-
-.lightbox-nav:hover {
-    background: #859F3D;
-    transform: translateY(-50%) scale(1.1);
-}
-
-/* Image Wrapper */
+/* ── IMAGE WRAPPER — adapts to any ratio ── */
 .lightbox-image-wrapper {
     position: relative;
-    max-width: 100%;
-    max-height: 70vh;
+    /* Fill available space but respect viewport */
+    flex: 1;
+    width: 100%;
+    min-height: 0;             /* critical for flex shrink */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .lightbox-image-wrapper img {
+    /* Smart fit: use all available space, never overflow */
     max-width: 100%;
-    max-height: 70vh;
+    max-height: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain;
-    border: 6px solid var(--white);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    border: 4px solid #fff;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    display: block;
+    transition: opacity 0.25s ease;
 }
 
-/* Category Tag on Image */
+/* ── CATEGORY TAG ── */
 .lightbox-category-tag {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 8px 20px;
+    top: 12px;
+    left: 12px;
+    padding: 6px 16px;
     background: #859F3D;
-    color: var(--black);
+    color: #000;
     font-family: 'Bangers', cursive;
-    font-size: 1.125rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
-    border: 3px solid var(--black);
-    box-shadow: 4px 4px 0px var(--black);
-    transform: rotate(-3deg);
+    border: 3px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    transform: rotate(-2deg);
+    z-index: 5;
 }
 
-/* Counter */
+/* ── COUNTER ── */
 .lightbox-counter {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    padding: 8px 16px;
-    background: var(--black);
+    bottom: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    background: #000;
     color: #FFD700;
     font-family: 'Bangers', cursive;
-    font-size: 1rem;
+    font-size: 0.9rem;
     border: 2px solid #FFD700;
+    letter-spacing: 0.08em;
 }
 
-/* Image Info */
+/* ── INFO BAR ── */
 .lightbox-info {
-    margin-top: 24px;
+    width: 100%;
+    flex-shrink: 0;
     text-align: center;
-    max-width: 800px;
+    padding: 0 8px;
 }
 
 .lightbox-info h3 {
     font-family: 'Bangers', cursive;
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 3vw, 2rem);
     text-transform: uppercase;
-    color: var(--white);
-    margin: 0 0 8px 0;
+    font-style: italic;
+    color: #fff;
+    margin: 0 0 4px 0;
+    line-height: 1;
 }
 
 .lightbox-info p {
     font-family: 'Permanent Marker', cursive;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1rem;
+    color: rgba(255,255,255,0.35);
+    font-size: 0.75rem;
     margin: 0;
 }
 
-/* Controls */
+/* ── CONTROLS (slideshow) ── */
 .lightbox-controls {
-    margin-top: 24px;
+    flex-shrink: 0;
 }
 
 .lightbox-control-btn {
-    padding: 12px 32px;
+    padding: 10px 28px;
     background: #859F3D;
-    color: var(--black);
+    color: #000;
     font-family: 'Bangers', cursive;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     text-transform: uppercase;
-    border: 3px solid var(--black);
-    box-shadow: 4px 4px 0px var(--black);
+    letter-spacing: 0.08em;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+}
+.lightbox-control-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 #000;
 }
 
-.lightbox-control-btn:hover {
-    background: var(--white);
-    transform: translateY(-2px);
-    box-shadow: 6px 6px 0px var(--black);
+/* ══ MOBILE ══ */
+@media (max-width: 640px) {
+    .lightbox-content {
+        padding: 12px 10px 10px;
+        gap: 8px;
+    }
+
+    /* Arrows: smaller, inside viewport edges */
+    .lightbox-nav {
+        width: 36px;
+        height: 56px;
+        font-size: 1.6rem;
+    }
+
+    /* Tighter side padding so arrows don't eat space */
+    .lightbox-content {
+        padding-left: 44px;
+        padding-right: 44px;
+    }
+
+    .lightbox-category-tag {
+        font-size: 0.6rem;
+        padding: 4px 8px;
+        top: 6px; left: 6px;
+    }
+
+    .lightbox-counter {
+        font-size: 0.65rem;
+        bottom: 6px; right: 6px;
+    }
+
+    .lightbox-info h3 { font-size: 1.2rem; }
+    .lightbox-info p  { font-size: 0.65rem; }
+}
+
+/* ══ LANDSCAPE PHONE — extra tight ══ */
+@media (max-height: 500px) {
+    .lightbox-content {
+        padding-top: 8px;
+        gap: 4px;
+    }
+    .lightbox-info p { display: none; } /* hide desc on tiny screens */
 }
 
 /* ============================================
