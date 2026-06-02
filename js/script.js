@@ -302,9 +302,9 @@ window.addEventListener('load', () => {
 // CONSOLE EASTER EGG
 // ============================================
 
-console.log('%cðŸŽ¨ MATTEO LUNGU', 'font-size: 24px; font-weight: bold; color: #859F3D;');
-console.log('%cART WITH ATTITUDE ðŸš€', 'font-size: 16px; color: #FFD700;');
-console.log('%cLooking for something? Hit me up: hello@matteo.art', 'font-size: 12px; color: #fff;');
+console.log('%c🎨 MATTEO LUNGU', 'font-size: 24px; font-weight: bold; color: #859F3D;');
+console.log('%cART WITH ATTITUDE 🚀', 'font-size: 16px; color: #FFD700;');
+console.log('%cLooking for something? Hit me up: hello@matteolungu.art', 'font-size: 12px; color: #fff;');
 
 // ============================================
 // KEYBOARD SHORTCUTS (Easter Egg)
@@ -451,7 +451,48 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
+// RENDER EVENT PACKAGES FROM data.json
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.siteDataReady) return;
+
+    window.siteDataReady.then(data => {
+        const grid = document.getElementById('eventPackagesGrid');
+        if (!grid) return;
+
+        const esc = (s) => String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const packages = data.packages || [];
+        grid.innerHTML = packages.map(pkg => {
+            const color = ['white', 'green', 'yellow'].includes(pkg.color) ? pkg.color : 'white';
+            const features = (pkg.features || []).map(f =>
+                `<li><span>➔</span> ${esc(f)}</li>`).join('');
+            return `
+                <div class="event-package-card package-${color}">
+                    ${pkg.popular ? '<div class="package-badge">POPULAR</div>' : ''}
+                    <div class="package-duration">${esc(pkg.duration)}</div>
+                    <h3 class="package-name">${esc(pkg.name)}</h3>
+                    <p class="package-description">${esc(pkg.description)}</p>
+                    <ul class="package-features">
+                        ${features}
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">${esc(pkg.price)}</div>
+                        <button class="package-cta"
+                            onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
+                            CERE DISPONIBILITATE
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    });
+});
+
+// ============================================
 // END OF SCRIPT
 // ============================================
 
-console.log('%câœ… Site loaded successfully!', 'color: #859F3D; font-weight: bold;');
+console.log('%c✅ Site loaded successfully!', 'color: #859F3D; font-weight: bold;');

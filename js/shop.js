@@ -13,7 +13,9 @@ const cartOverlay      = document.getElementById('cartOverlay');
 const cartDrawer       = document.getElementById('cartDrawer');
 const cartClose        = document.getElementById('cartClose');
 const cartButton       = document.getElementById('cartButton');
+const cartButtonMobile = document.getElementById('cartButtonMobile');
 const cartCountElement = document.getElementById('cartCount');
+const cartCountMobile  = document.getElementById('cartCountMobile');
 
 // ─── OPEN / CLOSE ─────────────────────────────
 function openCart() {
@@ -28,9 +30,10 @@ function closeCart() {
     document.body.style.overflow = 'auto';
 }
 
-if (cartButton)  cartButton.addEventListener('click', openCart);
-if (cartClose)   cartClose.addEventListener('click', closeCart);
-if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+if (cartButton)       cartButton.addEventListener('click', openCart);
+if (cartButtonMobile) cartButtonMobile.addEventListener('click', openCart);
+if (cartClose)        cartClose.addEventListener('click', closeCart);
+if (cartOverlay)      cartOverlay.addEventListener('click', closeCart);
 
 // ─── STEP NAVIGATION ─────────────────────────
 function goToStep(step) {
@@ -90,13 +93,15 @@ function removeFromCart(itemId) {
 
 // ─── CART BADGE ───────────────────────────────
 function updateCartBadge() {
-    if (!cartCountElement) return;
-    if (cartCount > 0) {
-        cartCountElement.textContent = cartCount;
-        cartCountElement.style.display = 'flex';
-    } else {
-        cartCountElement.style.display = 'none';
-    }
+    [cartCountElement, cartCountMobile].forEach((badge) => {
+        if (!badge) return;
+        if (cartCount > 0) {
+            badge.textContent = cartCount;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    });
 }
 
 // ─── STEP 1 — ITEMS ───────────────────────────
@@ -353,63 +358,40 @@ function initCart() {
 document.addEventListener('DOMContentLoaded', initCart);
 
 /* ============================================
-   LOAD PRODUCTS FROM HTML - Easy to Edit!
+   LOAD PRODUCTS FROM data.json (via js/data.js)
 ============================================ */
-
-function loadCustomServices() {
-    const servicesContainer = document.getElementById('customServicesData');
-    if (!servicesContainer) {
-        console.warn('⚠️ customServicesData not found in HTML!');
-        return [];
-    }
-
-    const serviceElements = servicesContainer.querySelectorAll('.service-data');
-    const services = [];
-
-    serviceElements.forEach(el => {
-        const options = Array.from(el.querySelectorAll('.option')).map(opt => opt.textContent.trim());
-        services.push({
-            id: el.dataset.id,
-            name: el.dataset.name,
-            basePrice: parseInt(el.dataset.price),
-            image: el.dataset.image,
-            color: el.dataset.color,
-            description: el.dataset.description,
-            options: options
-        });
-    });
-
-    console.log('✅ Loaded', services.length, 'custom services from HTML');
-    return services;
-}
-
-function loadReadyProducts() {
-    const productsContainer = document.getElementById('readyProductsData');
-    if (!productsContainer) return [];
-
-    const productElements = productsContainer.querySelectorAll('.product-data');
-    const products = [];
-
-    productElements.forEach(el => {
-        products.push({
-            id: el.dataset.id,
-            name: el.dataset.name,
-            price: parseInt(el.dataset.price),
-            image: el.dataset.image,
-            cat: el.dataset.category,
-            holo: el.dataset.holo === 'true'
-        });
-    });
-
-    return products;
-}
 
 let customServices = [];
 let readyProducts = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    customServices = loadCustomServices();
-    readyProducts = loadReadyProducts();
+    window.siteDataReady.then(data => {
+        readyProducts = (data.shop.ready || []).map(p => ({
+            id: p.id,
+            name: p.name,
+            price: parseInt(p.price) || 0,
+            image: p.image,
+            cat: p.cat,
+            holo: p.holo === true || p.holo === 'true'
+        }));
+
+        customServices = (data.shop.custom || []).map(s => ({
+            id: s.id,
+            name: s.name,
+            basePrice: parseInt(s.basePrice) || 0,
+            image: s.image,
+            color: s.color,
+            description: s.description,
+            options: s.options || []
+        }));
+
+        console.log('✅ Loaded', readyProducts.length, 'products and', customServices.length, 'custom services');
+
+        // Dacă pagina de shop e deja deschisă, re-randează cu datele proaspete
+        if (shopPage && shopPage.classList.contains('active')) {
+            renderShopProducts();
+        }
+    });
 });
 
 /* ============================================

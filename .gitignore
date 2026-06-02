@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.DS_Store
+
+# CMS: imaginile încărcate de artist și backup-ul datelor nu intră în git
+uploads/*
+!uploads/.htaccess
+data.json.bak
+
+# Config PHP doar pentru dev local
+php.dev.ini

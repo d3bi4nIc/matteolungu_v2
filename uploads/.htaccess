@@ -1,0 +1,6 @@
+# Nu permite execuția de scripturi în folderul de uploads
+Options -Indexes
+
+<FilesMatch "\.(php|phtml|phps|php3|php4|php5|php7|pht|cgi|pl|py|asp|aspx|sh|exe)$">
+    Require all denied
+</FilesMatch>

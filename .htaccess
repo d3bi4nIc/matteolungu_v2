@@ -1,0 +1,4 @@
+# Blochează accesul la fișierele de backup (data.json.bak)
+<FilesMatch "\.(bak)$">
+    Require all denied
+</FilesMatch>

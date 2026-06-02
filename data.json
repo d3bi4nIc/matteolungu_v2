@@ -1,0 +1,189 @@
+{
+    "shop": {
+        "ready": [
+            {
+                "id": "ms-card-01",
+                "name": "Multistarz Rare #01",
+                "price": 45,
+                "image": "https://picsum.photos/seed/ms1/500/700",
+                "cat": "Collectibles",
+                "holo": true
+            },
+            {
+                "id": "ms-card-02",
+                "name": "Multistarz Rare #02",
+                "price": 45,
+                "image": "https://picsum.photos/seed/ms2/500/700",
+                "cat": "Collectibles",
+                "holo": true
+            },
+            {
+                "id": "original-paint-1",
+                "name": "Ink Chaos (A3 Original)",
+                "price": 850,
+                "image": "https://picsum.photos/seed/paint1/500/700",
+                "cat": "Paintings",
+                "holo": false
+            },
+            {
+                "id": "original-paint-2",
+                "name": "Neon Soul (Canvas)",
+                "price": 1200,
+                "image": "https://picsum.photos/seed/paint2/500/700",
+                "cat": "Paintings",
+                "holo": false
+            },
+            {
+                "id": "sticker-pack",
+                "name": "Matteo Sticker Pack",
+                "price": 25,
+                "image": "https://picsum.photos/seed/stick/500/700",
+                "cat": "Merch",
+                "holo": false
+            }
+        ],
+        "custom": [
+            {
+                "id": "caricatura-digital",
+                "name": "Caricatură Digitală",
+                "basePrice": 150,
+                "image": "https://picsum.photos/seed/caric_digital/500/500",
+                "color": "#3b82f6",
+                "description": "Design digital HQ livrat pe mail. Perfect pentru avatar social media.",
+                "options": [
+                    "Standard (1 pers)",
+                    "Cuplu (2 pers)",
+                    "Grup (3+ pers)"
+                ]
+            },
+            {
+                "id": "caricatura-clasica",
+                "name": "Caricatură Clasică",
+                "basePrice": 200,
+                "image": "https://picsum.photos/seed/caric_classic/500/500",
+                "color": "#eab308",
+                "description": "Lucrată tradițional pe carton special. Include livrare fizică.",
+                "options": [
+                    "A4 - Alb/Negru",
+                    "A4 - Color",
+                    "A3 - Color"
+                ]
+            },
+            {
+                "id": "portret-artist",
+                "name": "Portret Artistic",
+                "basePrice": 300,
+                "image": "https://picsum.photos/seed/portret_art/500/500",
+                "color": "#22c55e",
+                "description": "O lucrare de artă fină bazată pe fotografia ta. Stil realist-urban.",
+                "options": [
+                    "Digital HQ",
+                    "Canvas 30x40",
+                    "Canvas 50x70"
+                ]
+            }
+        ]
+    },
+    "gallery": [
+        {
+            "id": "1",
+            "category": "caricaturi",
+            "title": "Caricatura Personaj #1",
+            "description": "Caricatura digitala realizata pentru client",
+            "image": "https://picsum.photos/seed/art1/1200/800"
+        },
+        {
+            "id": "2",
+            "category": "portrete",
+            "title": "Portret Artistic #1",
+            "description": "Portret in stil modernist",
+            "image": "https://picsum.photos/seed/art2/1200/800"
+        },
+        {
+            "id": "3",
+            "category": "murale",
+            "title": "Mural Stradal",
+            "description": "Pictura murala in Sanpetru, Brasov",
+            "image": "https://picsum.photos/seed/art3/1200/800"
+        },
+        {
+            "id": "4",
+            "category": "collectibles",
+            "title": "Multistarz Collectibles Micutzu",
+            "description": "Caricatura edtie limitata",
+            "image": "https://picsum.photos/seed/art4/1200/800"
+        },
+        {
+            "id": "5",
+            "category": "caricaturi",
+            "title": "Caricatura Client",
+            "description": "Caricatura clasica pe hartie",
+            "image": "https://picsum.photos/seed/art5/1200/800"
+        },
+        {
+            "id": "6",
+            "category": "portrete",
+            "title": "Portret Artistic #2",
+            "description": "Portret digital HQ",
+            "image": "https://picsum.photos/seed/art6/1200/800"
+        },
+        {
+            "id": "7",
+            "category": "murale",
+            "title": "Street Art Urban",
+            "description": "Graffiti pe perete",
+            "image": "https://picsum.photos/seed/art7/1200/800"
+        },
+        {
+            "id": "8",
+            "category": "collectibles",
+            "title": "Multistarz Collectibles Spiderman",
+            "description": "Card collectibles edtie speciala",
+            "image": "https://picsum.photos/seed/art8/1200/800"
+        }
+    ],
+    "packages": [
+        {
+            "id": "starter",
+            "color": "white",
+            "name": "STARTER EVENT",
+            "duration": "2 ORE",
+            "description": "Ideal pentru evenimente restrânse sau aniversări.",
+            "features": [
+                "~15 Caricaturi alb-negru",
+                "Materiale incluse",
+                "Încă ceva nu știu ce"
+            ],
+            "price": "300 LEI",
+            "popular": false
+        },
+        {
+            "id": "standard",
+            "color": "green",
+            "name": "STANDARD WEDDING",
+            "duration": "4 ORE",
+            "description": "Cel mai popular pachet pentru nunți și evenimente medii.",
+            "features": [
+                "~20-30 Caricaturi",
+                "Personalizare hârtie (nume/dată)",
+                "Show interactiv"
+            ],
+            "price": "1000 LEI",
+            "popular": true
+        },
+        {
+            "id": "vip",
+            "color": "yellow",
+            "name": "VIP EXPERIENCE",
+            "duration": "FULL EVENT",
+            "description": "Fara limita de timp, pana pleaca si ultimul invitat.",
+            "features": [
+                "Caricaturi nelimitate",
+                "Format digital opțional",
+                "Prioritate în rezervare"
+            ],
+            "price": "CONTACT",
+            "popular": false
+        }
+    ]
+}

@@ -1330,42 +1330,8 @@
     transform: rotate(-5deg);
 }
 
-/* Cart Button in Header - add manually to nav */
-.cart-button {
-    position: relative;
-    padding: 8px;
-    background: var(--white);
-    border: 3px solid var(--black);
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    box-shadow: 4px 4px 0px #859F3D;
-}
-
-.cart-button:hover {
-    transform: scale(1.1);
-}
-
-.cart-button svg {
-    width: 24px;
-    height: 24px;
-    color: var(--black);
-}
-
+/* Cart count bounce on update — base button/count styles live in style.css */
 .cart-count {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    width: 32px;
-    height: 32px;
-    background: #FFD700;
-    border: 2px solid var(--black);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Bangers', cursive;
-    font-size: 1.125rem;
-    color: var(--black);
     animation: bounce 0.5s ease;
 }
 
@@ -1434,7 +1400,7 @@
 
 /* Add special sparkle emoji to holo cards */
 .ready-product-card.holo-card .ready-product-cat::after {
-    content: ' âœ¨';
+    content: ' ✨';
 }
 /* ============================================
    CLIENT FIELDS - Name & Phone inputs
@@ -1493,7 +1459,6 @@
 }
 
 .input-field input:focus {
-    border-left-color: #859F3D;
     background: rgba(255,255,255,0.06);
     border-color: rgba(255,255,255,0.2);
     border-left-color: #859F3D;

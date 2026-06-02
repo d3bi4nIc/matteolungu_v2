@@ -132,8 +132,7 @@ body {
    TYPOGRAPHY - FONTS
 ============================================ */
 
-/* Import Bangers font for bold comic titles */
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&display=swap');
+/* Fonts loaded via <link> in index.html <head> */
 
 .title-white,
 .title-green,
@@ -538,21 +537,6 @@ h3 {
     transform: scale(1.05);
 }
 
-/* Order Button */
-.mobile-menu .btn-order {
-    padding: 14px 36px;
-    background: #FFD700;
-    border: 3px solid var(--black);
-    color: var(--black);
-    font-family: 'Bangers', cursive;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 1.5rem;
-    box-shadow: 5px 5px 0px #859F3D;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
 /* Order Button - MAI MIC */
 .mobile-menu .btn-order {
     display: block;
@@ -569,27 +553,6 @@ h3 {
     /* Mai mic - era 1.5rem */
     box-shadow: 4px 4px 0px #859F3D;
     cursor: pointer;
-}
-
-/* Prevent scrolling when menu is open */
-body.menu-open {
-    overflow: hidden;
-}
-
-/* Show mobile toggle on small screens */
-@media (max-width: 767px) {
-    .mobile-toggle {
-        display: flex;
-    }
-
-    .mobile-menu {
-        display: flex;
-    }
-
-    /* Hide desktop nav */
-    .nav-links {
-        display: none !important;
-    }
 }
 
 /* Prevent scrolling when menu is open */
@@ -976,56 +939,6 @@ body.menu-open {
     .multistarz-circle {
         width: 240px;
         height: 240px;
-    }
-}
-
-@media (max-width: 1200px) {
-    .hero-right {
-        right: -20px;
-    }
-
-    .multistarz-circle {
-        width: 220px;
-        height: 220px;
-    }
-}
-
-@media (max-width: 1024px) {
-
-    /* Sticker goes below on mobile */
-    .hero-right {
-        position: relative;
-        top: auto;
-        right: auto;
-        transform: rotate(8deg);
-        margin-top: 40px;
-    }
-
-    .multistarz-circle {
-        width: 260px;
-        height: 260px;
-    }
-}
-
-@media (max-width: 640px) {
-    .multistarz-circle {
-        width: 220px;
-        height: 220px;
-    }
-}
-
-/* ============================================
-   RESPONSIVE
-============================================ */
-
-@media (max-width: 1400px) {
-    .hero-right {
-        right: -40px;
-    }
-
-    .multistarz-circle {
-        width: 240px;
-        height: 240px;
         padding: 30px;
     }
 }
@@ -1311,22 +1224,6 @@ body.menu-open {
 
 .shop-card:hover .card-image img {
     filter: grayscale(0);
-}
-
-/* Badge Corner */
-.badge-corner {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Bangers', cursive;
-    font-size: 0.625rem;
-    /* text-[10px] */
-    letter-spacing: 0.1em;
-    /* tracking-widest */
-    text-transform: uppercase;
 }
 
 /* ============================================

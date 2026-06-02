@@ -35,20 +35,35 @@ const slideshowIcon = document.getElementById('slideshowIcon');
 // LOAD PHOTOS FROM HTML DATA
 // ============================================
 
-function loadGalleryData() {
-    const dataContainer = document.getElementById('galleryData');
-    if (!dataContainer) return;
+function escapeAttr(str) {
+    return String(str == null ? '' : str).replace(/"/g, '&quot;');
+}
 
-    const photoElements = dataContainer.querySelectorAll('.photo-data');
-    allPhotos = Array.from(photoElements).map(el => ({
-        id: el.dataset.id,
-        category: el.dataset.category,
-        title: el.dataset.title,
-        description: el.dataset.description,
-        image: el.dataset.image
-    }));
+function capitalize(str) {
+    str = String(str || '');
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
-    console.log('✅ Loaded', allPhotos.length, 'photos');
+// Randează preview-ul de pe homepage (primele 6 poze) ca polaroids
+function renderGalleryPreview() {
+    const grid = document.getElementById('galleryPreviewGrid');
+    if (!grid) return;
+
+    const preview = allPhotos.slice(0, 6);
+    grid.innerHTML = preview.map((photo, i) => `
+        <div class="polaroid" data-category="${escapeAttr(photo.category)}">
+            <div class="polaroid-image">
+                <img src="${escapeAttr(photo.image)}" alt="${escapeAttr(photo.title)}">
+            </div>
+            <div class="polaroid-caption">
+                <p>${capitalize(photo.category)}</p>
+                <span>#${i + 1}</span>
+            </div>
+            <div class="polaroid-overlay">
+                <h4>WOW!</h4>
+            </div>
+        </div>
+    `).join('');
 }
 
 // ============================================
@@ -218,9 +233,22 @@ function stopSlideshow() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Load gallery data
-    loadGalleryData();
-    
+    // Load gallery data din data.json
+    window.siteDataReady.then(data => {
+        allPhotos = (data.gallery || []).map(p => ({
+            id: p.id,
+            category: p.category,
+            title: p.title,
+            description: p.description,
+            image: p.image
+        }));
+        console.log('✅ Loaded', allPhotos.length, 'photos');
+        renderGalleryPreview();
+        if (galleryPage && galleryPage.classList.contains('active')) {
+            renderGalleryGrid();
+        }
+    });
+
     // Open gallery button (from homepage)
     if (btnViewGallery) {
         btnViewGallery.addEventListener('click', (e) => {
