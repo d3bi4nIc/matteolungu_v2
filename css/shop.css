@@ -1330,6 +1330,44 @@
     transform: rotate(-5deg);
 }
 
+/* ── MOBILE: recenzii compacte, să nu domine ecranul ── */
+@media (max-width: 640px) {
+    .review-card {
+        width: 200px;
+        max-width: 70vw;
+        padding: 14px 16px;
+        box-shadow: 4px 4px 0px #859F3D;
+        /* fără overflow:hidden aici — ar tăia badge-ul și coada care ies din card.
+           Înălțimea e ținută sub control de line-clamp pe .review-text. */
+    }
+
+    .review-text {
+        font-size: 0.85rem;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        /* Limitează la 4 rânduri ca să nu crească cardul */
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .review-author { font-size: 0.75rem; }
+
+    .review-verified {
+        font-size: 0.55rem;
+        padding: 3px 6px;
+        top: -10px;
+        left: -10px;
+    }
+
+    .review-bubble-tail {
+        width: 24px;
+        height: 24px;
+        bottom: -12px;
+    }
+}
+
 /* Cart count bounce on update — base button/count styles live in style.css */
 .cart-count {
     animation: bounce 0.5s ease;
