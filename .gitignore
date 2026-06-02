@@ -7,6 +7,3 @@ dist/
 uploads/*
 !uploads/.htaccess
 data.json.bak
-
-# Config PHP doar pentru dev local
-php.dev.ini
